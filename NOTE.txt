@@ -1,0 +1,36 @@
+1. tạo folder dự án bằng cli
+2. tạo component coaches
+   2.1. tạo fake data để sử dụng, object có định dạng như mẫu phía dưới
+   type area = 'frontend' | 'backend' | 'fullstack
+   type coaches = [
+      {
+         areas: area[],
+         description: string,
+         firstName: string,
+         lastName: string,
+         hourlyRate: number
+      }
+   ]
+
+   2.2. show dữ liệu ra màn hình như template
+   2.3. thêm tính năng filter
+   2.4. khi click vào view details sẽ show ra thông tin của coach ngay phía dưới list, nội dung tương tự như trang coaches/:id
+3. tạo common, dumb component
+   3.1. tách thành các dumb component (button, card, badge)
+   3.2. build header, footer
+3. routing
+   3.1. tách ra 1 route riêng cho phần detail
+   3.2  chuyển trang được khi click vào button trên navbar (hiện tại vì chưa phân quyền nên cứ show hết nav item)  
+   3.3  trước khi vào mỗi trang console log ra url của trang trước đó
+   3.4  khi rời mỗi trang phải console log 'good bye'
+4. tạo form đăng kí
+   4.1 trên trang demo, đăng kí 1 tài khoản để đăng nhập, sau đó click vào register as coach để đến trang tạo coach, build 1 form giao diện tương tự như hình
+   4.2 Thêm validation lúc blur
+   - firstName phải viết hoa chữ caí đầu
+   - lastName phải trên 3 kí tự
+   - description phải dưới 100 kí tự
+   - hour rate phải là số
+   - area bắt buộc phải chọn
+   - show error message bên dưới mỗi ô input, nội dung có thể tự chọn
+   4.3 lúc submit sẽ thêm Coach mới đăng kí vào list coach màn hình chính
+

@@ -1,18 +1,35 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <transition appear name="open">
+    <div class="home">
+      <Filter
+        @handleGetItemList="handleGetItemList"
+      />
+      <router-view></router-view>
+      <list-coach :itemFilter="itemFilter" />
+    </div>
+  </transition>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Filter from "../components/HomePage/Filter.vue";
+import ListCoach from "../components/HomePage/ListCoach.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    HelloWorld
-  }
-}
+    ListCoach,
+    Filter,
+  },
+  data() {
+    return {
+      itemFilter: "",
+    };
+  },
+  methods: {
+    handleGetItemList(list) {
+      this.itemFilter = list
+    },
+  },
+};
 </script>
+<style scoped></style>
