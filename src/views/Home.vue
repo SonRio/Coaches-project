@@ -1,9 +1,7 @@
 <template>
   <transition appear name="open">
     <div class="home">
-      <Filter
-        @handleGetItemList="handleGetItemList"
-      />
+      <Filter @handleGetItemList="handleGetItemList" />
       <router-view></router-view>
       <list-coach :itemFilter="itemFilter" />
     </div>
@@ -27,8 +25,13 @@ export default {
   },
   methods: {
     handleGetItemList(list) {
-      this.itemFilter = list
+      this.itemFilter = list;
     },
+    resetPage() {
+      window.location.reload();
+    },
+  },
+  mounted() {
   },
 };
 </script>

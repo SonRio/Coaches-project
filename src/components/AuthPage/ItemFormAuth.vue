@@ -2,12 +2,15 @@
   <form>
     <div class="form-control">
       <label for="email">E-mail</label>
-      <input type="email" id="email" required />
+      <input type="email" v-model="email" id="email" />
     </div>
     <div class="form-control">
       <label for="password">Password</label>
-      <input type="password" id="password" />
+      <input type="password" v-model="password" id="password" required />
     </div>
+    <p v-if="errors">
+      Please enter a valid email and password (must be at least 6 characters long).
+    </p>
     <item-button @click="handleSubmit()"> {{ textBtn }} </item-button>
     <item-link @click="handleChangeAction()" class="flat" :linkTo="linkToReg">
       {{ textLink }} instead
@@ -16,6 +19,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import ItemButton from "../common/ItemButton.vue";
 import ItemLink from "../common/ItemLink.vue";
 export default {
@@ -26,10 +30,15 @@ export default {
       checkAction: false,
       textBtn: "",
       textLink: "",
+      email: "",
+      password: "",
+      errors: false,
+      path: "",
     };
   },
   methods: {
     handleChangeAction() {
+      // SET TEXT FOR BTN
       this.checkAction = !this.checkAction;
       if (this.checkAction) {
         (this.textBtn = "Login"), (this.textLink = "Signup");
@@ -37,13 +46,61 @@ export default {
         (this.textBtn = "Signup"), (this.textLink = "Login");
       }
     },
-    handleSubmit(){
-      console.log(this);
-    }
+    handleSubmit() {
+      if (this.email == "" && this.password == "") {
+        this.errors = true;
+        event.preventDefault();
+      } else {
+        let dataPost = {
+          email: this.email,
+          password: this.password,
+          returnSecureToken: true,
+        };
+        if (this.textBtn == "Signup") {
+          // SIGN UP
+          console.log("SIGN UP");
+          event.preventDefault();
+          axios
+            .post(
+              "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCe3EbXvHvc8FM4F00XoX8Fm_hOQDDctic",
+              dataPost
+            )
+            .then((res) => {
+              console.log("REGISTER CORRECTED");
+              console.log(res.data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          // LOGIN
+          console.log("LOGIN");
+          event.preventDefault();
+          axios
+            .post(
+              "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCe3EbXvHvc8FM4F00XoX8Fm_hOQDDctic",
+              dataPost
+            )
+            .then((res) => {
+              console.log("LOGIN CORRECTED");
+              let checkLogin = {
+                idToken: res.data.idToken,
+                localId: res.data.localId,
+              };
+              localStorage.setItem("checkLogin", JSON.stringify(checkLogin));
+              this.$router.push({ path: "/coaches" });
+              this.$store.state.tokenId = checkLogin;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      }
+    },
   },
-  created(){
-    this.handleChangeAction()
-  }
+  created() {
+    this.handleChangeAction();
+  },
 };
 </script>
 

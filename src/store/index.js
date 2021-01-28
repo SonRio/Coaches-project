@@ -8,7 +8,13 @@ export default createStore({
   state: {
     areas: [],
     coaches: [],
-    temp: []
+    temp: [],
+    tokenId: localStorage.getItem('checkLogin')
+  },
+  getters: {
+    getTokenId: (state) => {
+      return state.tokenId;
+    }
   },
   mutations: {
     setDefaultData(state, coaches) {
@@ -21,7 +27,7 @@ export default createStore({
   actions: {
     getDefaultData(state) {
       axios
-        .get("https://vue-demo-1c5df-default-rtdb.firebaseio.com/coaches.json")
+        .get("https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches.json")
         .then((res) => {
           state.commit('setDefaultData', res.data)
           state.commit('setTempData', Object.values(res.data))
@@ -38,6 +44,6 @@ export default createStore({
         return check;
       })
       store.state.coaches = temp;
-    },
+    }
   },
 })

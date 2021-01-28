@@ -6,7 +6,7 @@ import Home from '../views/Home.vue'
 
 const routes = [{
     path: '/',
-    component: () => import( /* webpackChunkName: "about" */ '../views/Home.vue')
+    component: () => import( /* webpackChunkName: "about" */ '../App.vue')
   }, {
     path: '/coaches',
     name: 'Coaches',
@@ -14,13 +14,11 @@ const routes = [{
     components: {
       default: Home,
     },
-    children : [
-      {
-        path : '/coaches/:id',
-        name : 'Detail',
-        component: () => import( /* webpackChunkName: "about" */ '../views/Detail.vue'),
-      }
-    ]
+    children: [{
+      path: '/coaches/:id',
+      name: 'Detail',
+      component: () => import( /* webpackChunkName: "about" */ '../views/Detail.vue'),
+    }]
   },
   {
     path: '/auth',

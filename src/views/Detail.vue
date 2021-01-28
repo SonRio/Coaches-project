@@ -58,7 +58,7 @@ export default {
       this.id = this.$route.params.id;
       axios
         .get(
-          `https://vue-demo-1c5df-default-rtdb.firebaseio.com/coaches/${this.id}.json/`
+          `https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches/${this.id}.json/`
         )
         .then((res) => {
           this.detailCoach = res.data;

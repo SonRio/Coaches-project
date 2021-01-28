@@ -8,7 +8,13 @@
         <li>
           <router-link :active="isActive" to="/coaches"> All Coaches </router-link>
         </li>
-        <li>
+        <li v-if="getTokenId != null && getTokenId != '' ">
+          <router-link to="/request"> Request </router-link>
+        </li>
+        <li v-if="getTokenId != null && getTokenId != '' ">
+          <item-button @click="handleLogout()">Logout</item-button>
+        </li>
+        <li v-else>
           <router-link to="/auth"> Login</router-link>
         </li>
       </ul>
@@ -17,7 +23,29 @@
 </template>
 
 <script>
-export default {};
+import ItemButton from "./common/ItemButton.vue";
+export default {
+  components: { ItemButton },
+  data() {
+    return {
+      checkLogin: "",
+    };
+  },
+  methods: {
+    handleLogout() {
+      localStorage.clear();
+      this.$store.state.tokenId = '';
+    },
+  },
+  mounted() {
+    // return (this.checkLogin = localStorage.getItem("checkLogin"));
+  },
+  computed: {
+    getTokenId() {
+      return this.$store.getters.getTokenId;
+    },
+  },
+};
 </script>
 
 <style scoped>

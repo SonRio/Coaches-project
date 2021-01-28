@@ -3,10 +3,16 @@
     <item-card>
       <div class="controls">
         <item-button class="outline"> Refresh </item-button>
-        <item-link v-bind:linkTo="linkToLogin"> Login to Register as Coach </item-link>
+        <item-link v-bind:linkTo="linkToLogin">
+          {{ textLink = getTokenId ? '' : 'Login to' || ''  }} Register as Coach
+        </item-link>
       </div>
       <ul>
-        <item-coach v-for="item in Object.entries(getData)" :key="item[0]" :itemList="item">
+        <item-coach
+          v-for="item in Object.entries(getData)"
+          :key="item[0]"
+          :itemList="item"
+        >
         </item-coach>
       </ul>
     </item-card>
@@ -23,17 +29,20 @@ export default {
   data() {
     return {
       linkToLogin: "/auth",
+      textLink: "",
     };
   },
   computed: {
     getData() {
-      // console.log(this.$store.state.coaches);
       return this.$store.state.coaches;
+    },
+    getTokenId() {
+      return this.$store.getters.getTokenId;
     },
   },
   mounted() {
     this.$store.dispatch("getDefaultData");
-  },
+  }
 };
 </script>
 
