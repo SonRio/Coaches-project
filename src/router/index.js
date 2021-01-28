@@ -6,7 +6,7 @@ import Home from '../views/Home.vue'
 
 const routes = [{
     path: '/',
-    component: () => import( /* webpackChunkName: "about" */ '../App.vue')
+    component: () => import( /* webpackChunkName: "about" */ '../views/Home.vue')
   }, {
     path: '/coaches',
     name: 'Coaches',
@@ -29,6 +29,11 @@ const routes = [{
     path: '/coaches/:id/contact',
     name: 'Contact',
     component: () => import( /* webpackChunkName: "about" */ '../views/Contact.vue')
+  },
+  {
+    path: '/register',
+    name: 'RegisterCoach',
+    component: () => import( /* webpackChunkName: "about" */ '../views/RegisterCoach.vue')
   },
   // {
   //   path: '/detail/:id',

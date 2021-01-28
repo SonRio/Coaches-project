@@ -9,11 +9,21 @@ export default createStore({
     areas: [],
     coaches: [],
     temp: [],
-    tokenId: localStorage.getItem('checkLogin')
+    tokenId: localStorage.getItem('checkLogin'),
+    linkTo: '/coaches',
+    status: ''
   },
   getters: {
-    getTokenId: (state) => {
+    setTokenId: (state) => {
       return state.tokenId;
+    },
+    setLinkTo: (state) => {
+      if (state.tokenId != null && state.tokenId != '') {
+        state.linkTo = '/register'
+      } else {
+        state.linkTo = '/auth'
+      }
+      return state.linkTo;
     }
   },
   mutations: {
@@ -22,6 +32,9 @@ export default createStore({
     },
     setTempData(state, temp) {
       state.temp = temp;
+    },
+    getResultPost(state, status) {
+      state.status = status;
     }
   },
   actions: {
@@ -44,6 +57,17 @@ export default createStore({
         return check;
       })
       store.state.coaches = temp;
+    },
+    handlePostData(state, payLoad) {
+      // console.log(state,payload.url);
+      axios.post(payLoad.url, payLoad.data).then((res) => {
+        console.log('POST CORRECTED');
+        state.commit('getResultPost', res.data);
+      }).catch(err => {
+        console.log('POST FAILSE');
+        state.commit('getResultPost', err.message)
+      })
     }
   },
+
 })

@@ -1,6 +1,7 @@
 <template>
   <transition appear name="open">
     <div class="home">
+      <item-lazy-load></item-lazy-load>
       <Filter @handleGetItemList="handleGetItemList" />
       <router-view></router-view>
       <list-coach :itemFilter="itemFilter" />
@@ -11,12 +12,14 @@
 <script>
 import Filter from "../components/HomePage/Filter.vue";
 import ListCoach from "../components/HomePage/ListCoach.vue";
+import ItemLazyLoad from '../components/common/itemLazyLoad.vue';
 
 export default {
   name: "Home",
   components: {
     ListCoach,
     Filter,
+    ItemLazyLoad
   },
   data() {
     return {
@@ -32,7 +35,9 @@ export default {
     },
   },
   mounted() {
+    
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+</style>

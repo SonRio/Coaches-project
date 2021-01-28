@@ -35,6 +35,7 @@ export default {
     handleLogout() {
       localStorage.clear();
       this.$store.state.tokenId = '';
+      this.$router.push({ path: "/coaches" });
     },
   },
   mounted() {
@@ -42,7 +43,7 @@ export default {
   },
   computed: {
     getTokenId() {
-      return this.$store.getters.getTokenId;
+      return this.$store.getters.setTokenId;
     },
   },
 };

@@ -42,4 +42,16 @@ h4 {
   opacity: 1;
   transform: translateY(0px);
 }
+
+.open-leave-active {
+  transition: 1s;
+}
+.open-leave-from {
+  opacity: 1;
+  transform: translateY(0px);
+}
+.open-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
 </style>
