@@ -51,19 +51,34 @@ export default {
   },
   methods: {
     handleSubmit() {
-      let dataPost = {
+      let user = JSON.parse( localStorage.getItem("userId"));
+      // console.log(user.idToken);
+      // console.log(user);
+      let dataCoach = {
         areas: this.areas,
         description: this.description,
         firstName: this.firstname,
         hourlyRate: this.hRate,
         lastName: this.lastname,
       };
-    this.$store.dispatch({
-        type : 'handlePostData',
-        url : "https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches.json",
-        data : dataPost
-    })
-    this.$router.push('/coaches')
+
+      this.$store.dispatch({
+        type: "handlePostDataCoach",
+        url: `https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches/${user.localId}.json?auth=${user.idToken}`,
+        data: dataCoach,
+      });
+
+      this.$router.push("/coaches");
+
+      //  let dataRequest = {
+      //         message: "",
+      //         userEmail: user.email,
+      //       };
+      // this.$store.dispatch({
+      //   type: "handlePostDataRequest",
+      //   url: "https://coaches-project-8d77f-default-rtdb.firebaseio.com/request.json",
+      //   data: dataRequest,
+      // });
     },
   },
 };

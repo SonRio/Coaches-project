@@ -3,12 +3,13 @@
     <item-card>
       <div class="controls">
         <item-button @click="handleRefresh()" class="outline"> Refresh </item-button>
-        <item-link :linkTo="getLinkTo">
+        <item-link v-if="getCheckCoach == -1 " :linkTo="getLinkTo">
           {{ (textLink = getTokenId ? "" : "Login to" || "") }}
           Register as Coach
         </item-link>
       </div>
-      <ul v-if="getData != ''">
+      <item-lazy-load v-if="getData == ''"></item-lazy-load>
+      <ul v-else>
         <item-coach
           v-for="item in Object.entries(getData)"
           :key="item[0]"
@@ -16,7 +17,6 @@
         >
         </item-coach>
       </ul>
-      <h2 v-else>Loading...</h2>
     </item-card>
   </section>
 </template>
@@ -24,10 +24,11 @@
 <script>
 import ItemButton from "../common/ItemButton.vue";
 import ItemCard from "../common/ItemCard.vue";
+import ItemLazyLoad from "../common/itemLazyLoad.vue";
 import ItemLink from "../common/ItemLink.vue";
 import ItemCoach from "./ItemCoach.vue";
 export default {
-  components: { ItemCoach, ItemButton, ItemLink, ItemCard },
+  components: { ItemCoach, ItemButton, ItemLink, ItemCard, ItemLazyLoad },
   data() {
     return {
       textLink: "",
@@ -45,7 +46,7 @@ export default {
       if (this.$store.getters.setTokenId != null) {
         return this.$store.getters.setTokenId;
       } else {
-        return "Login to";
+        return "";
       }
     },
     getLinkTo() {
@@ -55,10 +56,17 @@ export default {
         return "/coaches";
       }
     },
-  },
-  watch: {
-    getData: function () {
-      return this.$store.dispatch("getDefaultData");
+    getResultPost() {
+      if (this.$store.state.status) {
+        return this.$store.state.status;
+      } else {
+        return "";
+      }
+    },
+    getCheckCoach() {
+      let user = JSON.parse(localStorage.getItem("userId"));
+      let index = Object.values(this.$store.state.checkCoach).findIndex(item => item == user.localId);
+      return index;
     },
   },
   mounted() {
@@ -67,6 +75,11 @@ export default {
   methods: {
     handleRefresh() {
       window.location.reload();
+    },
+  },
+  watch: {
+    getResultPost: function () {
+      this.$store.dispatch("getDefaultData");
     },
   },
 };

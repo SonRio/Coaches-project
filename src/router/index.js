@@ -33,7 +33,7 @@ const routes = [{
   {
     path: '/register',
     name: 'RegisterCoach',
-    component: () => import( /* webpackChunkName: "about" */ '../views/RegisterCoach.vue')
+    component: () => import( /* webpackChunkName: "about" */ '../views/RegisterCoach.vue'),
   },
   // {
   //   path: '/detail/:id',

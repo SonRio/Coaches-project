@@ -67,7 +67,7 @@ export default {
             )
             .then((res) => {
               console.log("REGISTER CORRECTED");
-              console.log(res.data);
+              localStorage.setItem('userId',JSON.stringify(res.data));
             })
             .catch((err) => {
               console.log(err);
@@ -86,6 +86,7 @@ export default {
               let checkLogin = {
                 idToken: res.data.idToken,
                 localId: res.data.localId,
+                email: res.data.email,
               };
               localStorage.setItem("checkLogin", JSON.stringify(checkLogin));
               this.$router.push({ path: "/coaches" });

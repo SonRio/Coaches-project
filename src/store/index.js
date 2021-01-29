@@ -11,7 +11,8 @@ export default createStore({
     temp: [],
     tokenId: localStorage.getItem('checkLogin'),
     linkTo: '/coaches',
-    status: ''
+    status: '',
+    checkCoach: ''
   },
   getters: {
     setTokenId: (state) => {
@@ -35,6 +36,9 @@ export default createStore({
     },
     getResultPost(state, status) {
       state.status = status;
+    },
+    setCheckCoach(state, check) {
+      state.checkCoach = check;
     }
   },
   actions: {
@@ -42,7 +46,8 @@ export default createStore({
       axios
         .get("https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches.json")
         .then((res) => {
-          state.commit('setDefaultData', res.data)
+          state.commit('setDefaultData', res.data);
+          state.commit('setCheckCoach', Object.keys(res.data));
           state.commit('setTempData', Object.values(res.data))
         }).catch(err => console.log(err));
     },
@@ -58,7 +63,16 @@ export default createStore({
       })
       store.state.coaches = temp;
     },
-    handlePostData(state, payLoad) {
+    handlePostDataCoach(state, payLoad) {
+      axios.put(payLoad.url, payLoad.data).then((res) => {
+        console.log('POST CORRECTED');
+        state.commit('getResultPost', res.data);
+      }).catch(err => {
+        console.log('POST FAILSE');
+        state.commit('getResultPost', err.message)
+      })
+    },
+    handlePostDataRequest(state, payLoad) {
       // console.log(state,payload.url);
       axios.post(payLoad.url, payLoad.data).then((res) => {
         console.log('POST CORRECTED');

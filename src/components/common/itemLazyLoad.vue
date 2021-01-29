@@ -1,14 +1,16 @@
 <template>
-  <div class="lds-roller">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
+  <transition appear name="loading">
+    <div class="lds-roller">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -16,14 +18,24 @@ export default {};
 </script>
 
 <style scoped>
+
+.loading-leave-from {
+  opacity: 1;
+}
+.loading-leave-to {
+  opacity: 0;
+}
+.loading-leave-active {
+  transition: 0.5s;
+}
+
 .lds-roller {
   display: inline-block;
   position: absolute;
   width: 80px;
   height: 80px;
-  transform: translate(-50%, -40%);
+  transform: translate(-50%, -100%);
   left: 50%;
-  top: 40%;
 }
 .lds-roller div {
   animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
