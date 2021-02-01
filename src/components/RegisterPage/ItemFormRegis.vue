@@ -51,9 +51,7 @@ export default {
   },
   methods: {
     handleSubmit() {
-      let user = JSON.parse( localStorage.getItem("userId"));
-      // console.log(user.idToken);
-      // console.log(user);
+      let user = JSON.parse( localStorage.getItem("checkLogin"));
       let dataCoach = {
         areas: this.areas,
         description: this.description,

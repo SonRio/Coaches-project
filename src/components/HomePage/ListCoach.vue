@@ -3,7 +3,10 @@
     <item-card>
       <div class="controls">
         <item-button @click="handleRefresh()" class="outline"> Refresh </item-button>
-        <item-link v-if="getCheckCoach == -1 " :linkTo="getLinkTo">
+        <item-link
+          v-if="getCheckCoach == null || getCheckCoach == ''"
+          :linkTo="getLinkTo"
+        >
           {{ (textLink = getTokenId ? "" : "Login to" || "") }}
           Register as Coach
         </item-link>
@@ -64,9 +67,7 @@ export default {
       }
     },
     getCheckCoach() {
-      let user = JSON.parse(localStorage.getItem("userId"));
-      let index = Object.values(this.$store.state.checkCoach).findIndex(item => item == user.localId);
-      return index;
+      return this.$store.getters.setTokenId;
     },
   },
   mounted() {
@@ -80,7 +81,7 @@ export default {
   watch: {
     getResultPost: function () {
       this.$store.dispatch("getDefaultData");
-    },
+    }
   },
 };
 </script>
