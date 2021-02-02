@@ -2,32 +2,49 @@
   <form>
     <div class="form-control">
       <label for="firstname">Firstname</label>
-      <input type="text" v-model="firstname" id="firstname" />
+      <input
+        type="text"
+        v-model="firstname.value"
+        id="firstname"
+        @keyup="handleCheckErr('firstname')"
+      />
+      <p>{{ firstname.err }}</p>
     </div>
     <div class="form-control">
       <label for="lastname">Lastname</label>
-      <input type="text" v-model="lastname" id="lastname" />
+      <input
+        type="text"
+        v-model="lastname.value"
+        id="lastname"
+        @keyup="handleCheckErr('lastname')"
+      />
     </div>
     <div class="form-control">
       <label for="description">Description</label>
-      <textarea type="text" v-model="description" id="description" rows="5"></textarea>
+      <textarea
+        type="text"
+        v-model="description.value"
+        id="description"
+        rows="5"
+        @keyup="handleCheckErr('description')"
+      ></textarea>
     </div>
     <div class="form-control">
       <label for="hRate">Hourly Rate</label>
-      <input type="number" v-model="hRate" id="hRate" />
+      <input type="number" v-model="hRate.value" id="hRate" />
     </div>
     <div class="form-control">
       <h3>Areas of Expertise</h3>
       <div>
-        <input type="checkbox" v-model="areas" value="frontend" id="frontend" />
+        <input type="checkbox" v-model="areas.value" value="frontend" id="frontend" />
         <label for="frontend">Frontend Deverloper</label>
       </div>
       <div>
-        <input type="checkbox" v-model="areas" value="backend" id="backend" />
+        <input type="checkbox" v-model="areas.value" value="backend" id="backend" />
         <label for="backend">Backend Deverloper</label>
       </div>
       <div>
-        <input type="checkbox" v-model="areas" value="career" id="career" />
+        <input type="checkbox" v-model="areas.value" value="career" id="career" />
         <label for="career">Career Deverloper</label>
       </div>
     </div>
@@ -42,42 +59,96 @@ export default {
   components: { ItemButton },
   data() {
     return {
-      firstname: "",
-      lastname: "",
-      description: "",
-      hRate: "",
-      areas: [],
+      firstname: {
+        value: "",
+        err: "",
+      },
+      lastname: {
+        value: "",
+        err: "",
+      },
+      description: {
+        value: "",
+        err: "",
+      },
+      hRate: {
+        value: "",
+        err: "",
+      },
+      areas: {
+        value: [],
+        err: "",
+      },
+      check : false
     };
   },
   methods: {
     handleSubmit() {
-      let user = JSON.parse( localStorage.getItem("checkLogin"));
-      
+      // let user = JSON.parse( localStorage.getItem("checkLogin"));
+
       let dataCoach = {
-        areas: this.areas,
-        description: this.description,
-        firstName: this.firstname,
-        hourlyRate: this.hRate,
-        lastName: this.lastname,
+        areas: this.areas.value,
+        description: this.description.value,
+        firstName: this.firstname.value,
+        hourlyRate: this.hRate.value,
+        lastName: this.lastname.value,
       };
+      console.log(dataCoach);
 
-      this.$store.dispatch({
-        type: "handlePostDataCoach",
-        url: `https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches/${user.localId}.json?auth=${user.idToken}`,
-        data: dataCoach,
-      });
-
-      this.$router.push("/coaches");
-
-      //  let dataRequest = {
-      //         message: "",
-      //         userEmail: user.email,
-      //       };
       // this.$store.dispatch({
-      //   type: "handlePostDataRequest",
-      //   url: "https://coaches-project-8d77f-default-rtdb.firebaseio.com/request.json",
-      //   data: dataRequest,
+      //   type: "handlePostDataCoach",
+      //   url: `https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches/${user.localId}.json?auth=${user.idToken}`,
+      //   data: dataCoach,
       // });
+
+      // this.$router.push("/coaches");
+    },
+    handleCheckErr(value) {
+      let dataCoach = {
+        areas: this.areas.value,
+        description: this.description.value,
+        firstName: this.firstname.value,
+        hourlyRate: this.hRate.value,
+        lastName: this.lastname.value,
+      };
+      switch (value) {
+        case "firstname":
+          if (dataCoach.firstName == "") {
+            this.firstname.err = "Firstname must not be empty.";
+          } else {
+            console.log(
+              dataCoach.firstName.charAt(0).toUpperCase(),
+              dataCoach.firstName.charAt(0)
+            );
+            if (
+              dataCoach.firstName.charAt(0).toUpperCase() !==
+              dataCoach.firstName.charAt(0)
+            ) {
+              this.firstname.err = "First name must capitalize the first letter";
+            }else{
+              this.firstname.err = "";
+              this.check = true
+            }
+          }
+          break;
+        case "lastname":
+          if (dataCoach.lastName == "") {
+            this.lastname.err = "Lastname must not be empty.";
+            this.check = false;
+          } else {
+            if (dataCoach.lastName.length < 3) {
+              this.lastname.err = "Lastname must more than three chars.";
+            }
+          }
+          break;
+        case "description":
+          if (dataCoach.description.length == "") {
+            this.description.err = "Description must not be empty.";
+            this.check = false;
+          }
+          break;
+      }
+      return this.check;
     },
   },
 };

@@ -67,7 +67,7 @@ export default {
       let arr = this.$store.state.temp;
       let userId = this.getTokenId;
       let index = -1;
-      if (userId != []) {
+      if (userId != null && arr != null) {
         index = Object.keys(arr).findIndex((item) => item == userId.localId);
       }
       return index;

@@ -12,7 +12,6 @@ export default createStore({
     tokenId: JSON.parse(localStorage.getItem('checkLogin')),
     linkTo: '/coaches',
     status: '',
-    checkCoach: '',
     request : []
   },
   getters: {
@@ -42,9 +41,6 @@ export default createStore({
       console.log(status);
       state.status = status;
     },
-    setCheckCoach(state, check) {
-      state.checkCoach = check;
-    }
   },
   actions: {
     getDefaultData(state) {
@@ -52,7 +48,6 @@ export default createStore({
         .get("https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches.json")
         .then((res) => {
           state.commit('setDefaultData', res.data);
-          state.commit('setCheckCoach', Object.keys(res.data));
           state.commit('setTempData', res.data)
         }).catch(err => console.log(err));
     },
@@ -86,7 +81,6 @@ export default createStore({
       })
     },
     handlePostDataRequest(state, payLoad) {
-      // console.log(state,payload.url);
       axios.post(payLoad.url, payLoad.data).then((res) => {
         console.log('POST REQUESTS CORRECTED');
         console.log(res);
