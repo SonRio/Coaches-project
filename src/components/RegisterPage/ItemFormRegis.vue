@@ -1,54 +1,76 @@
 <template>
-  <form>
-    <div class="form-control">
+  <form @submit="handleSubmit" method="post" novalidate="true">
+    <div class="form-control" :class="firstname.err == '' ? '' : 'error'">
       <label for="firstname">Firstname</label>
       <input
         type="text"
         v-model="firstname.value"
         id="firstname"
-        @keyup="handleCheckErr('firstname')"
+        @keyup="handleCheckAll()"
       />
-      <p>{{ firstname.err }}</p>
+      <p v-if="firstname.err">{{ firstname.err }}</p>
     </div>
-    <div class="form-control">
+    <div class="form-control" :class="lastname.err == '' ? '' : 'error'">
       <label for="lastname">Lastname</label>
       <input
         type="text"
         v-model="lastname.value"
         id="lastname"
-        @keyup="handleCheckErr('lastname')"
+        @keyup="handleCheckAll()"
       />
+      <p v-if="lastname.err">{{ lastname.err }}</p>
     </div>
-    <div class="form-control">
+    <div class="form-control" :class="description.err == '' ? '' : 'error'">
       <label for="description">Description</label>
       <textarea
         type="text"
         v-model="description.value"
         id="description"
         rows="5"
-        @keyup="handleCheckErr('description')"
+        @keyup="handleCheckAll()"
       ></textarea>
+      <p v-if="description.err">{{ lastname.err }}</p>
     </div>
-    <div class="form-control">
+    <div class="form-control" :class="hRate.err == '' ? '' : 'error'">
       <label for="hRate">Hourly Rate</label>
-      <input type="number" v-model="hRate.value" id="hRate" />
+      <input type="number" v-model="hRate.value" id="hRate" @keyup="handleCheckAll()" />
+      <p v-if="hRate.err">{{ hRate.err }}</p>
     </div>
     <div class="form-control">
       <h3>Areas of Expertise</h3>
-      <div>
-        <input type="checkbox" v-model="areas.value" value="frontend" id="frontend" />
+      <div :class="areas.err == '' ? '' : 'error'">
+        <input
+          type="checkbox"
+          v-model="areas.value"
+          value="frontend"
+          id="frontend"
+          @change="handleCheckAll()"
+        />
         <label for="frontend">Frontend Deverloper</label>
       </div>
-      <div>
-        <input type="checkbox" v-model="areas.value" value="backend" id="backend" />
+      <div :class="areas.err == '' ? '' : 'error'">
+        <input
+          type="checkbox"
+          v-model="areas.value"
+          value="backend"
+          id="backend"
+          @change="handleCheckAll()"
+        />
         <label for="backend">Backend Deverloper</label>
       </div>
-      <div>
-        <input type="checkbox" v-model="areas.value" value="career" id="career" />
+      <div :class="areas.err == '' ? '' : 'error'">
+        <input
+          type="checkbox"
+          v-model="areas.value"
+          value="career"
+          id="career"
+          @change="handleCheckAll()"
+        />
         <label for="career">Career Deverloper</label>
       </div>
+      <p v-if="areas.err">{{ areas.err }}</p>
     </div>
-    <item-button @click.prevent="handleSubmit()"> Register </item-button>
+    <item-button @click.prevent="handleSubmit()" type="submit"> Register </item-button>
   </form>
 </template>
 
@@ -79,82 +101,110 @@ export default {
         value: [],
         err: "",
       },
-      check : false
+      check: "",
     };
   },
   methods: {
     handleSubmit() {
-      // let user = JSON.parse( localStorage.getItem("checkLogin"));
-
-      let dataCoach = {
-        areas: this.areas.value,
-        description: this.description.value,
-        firstName: this.firstname.value,
-        hourlyRate: this.hRate.value,
-        lastName: this.lastname.value,
-      };
-      console.log(dataCoach);
-
-      // this.$store.dispatch({
-      //   type: "handlePostDataCoach",
-      //   url: `https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches/${user.localId}.json?auth=${user.idToken}`,
-      //   data: dataCoach,
-      // });
-
-      // this.$router.push("/coaches");
+      this.handleCheckAll();
+      if (this.check) {
+        console.log("post dc nha");
+        // let user = JSON.parse( localStorage.getItem("checkLogin"));
+        // let dataCoach = {
+        //   areas: this.areas.value,
+        //   description: this.description.value,
+        //   firstName: this.firstname.value,
+        //   hourlyRate: this.hRate.value,
+        //   lastName: this.lastname.value,
+        // };
+        // // console.log(dataCoach);
+        // this.$store.dispatch({
+        //   type: "handlePostDataCoach",
+        //   url: `https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches/${user.localId}.json?auth=${user.idToken}`,
+        //   data: dataCoach,
+        // });
+        // this.$router.push("/coaches");
+      }
     },
-    handleCheckErr(value) {
-      let dataCoach = {
-        areas: this.areas.value,
-        description: this.description.value,
-        firstName: this.firstname.value,
-        hourlyRate: this.hRate.value,
-        lastName: this.lastname.value,
-      };
-      switch (value) {
+    handleCheckAll() {
+      this.handleCheckErrItem("firstname", this.firstname);
+      this.handleCheckErrItem("lastname", this.lastname);
+      this.handleCheckErrItem("description", this.description);
+      this.handleCheckErrItem("hRate", this.hRate);
+      this.handleCheckErrItem("areas", this.areas);
+    },
+    handleCheckErrItem(item, key) {
+      switch (item) {
         case "firstname":
-          if (dataCoach.firstName == "") {
-            this.firstname.err = "Firstname must not be empty.";
+          if (key.value == "") {
+            key.err = "First name must not be empty.";
+            this.check = false;
           } else {
-            console.log(
-              dataCoach.firstName.charAt(0).toUpperCase(),
-              dataCoach.firstName.charAt(0)
-            );
-            if (
-              dataCoach.firstName.charAt(0).toUpperCase() !==
-              dataCoach.firstName.charAt(0)
-            ) {
-              this.firstname.err = "First name must capitalize the first letter";
-            }else{
-              this.firstname.err = "";
-              this.check = true
+            if (key.value.charAt(0).toUpperCase() !== key.value.charAt(0)) {
+              key.err = "First name must capitalize the first letter";
+              this.check = false;
+            } else {
+              key.err = "";
+              this.check = true;
             }
           }
           break;
         case "lastname":
-          if (dataCoach.lastName == "") {
-            this.lastname.err = "Lastname must not be empty.";
+          if (key.value == "") {
             this.check = false;
+            key.err = "Last name must not be empty.";
           } else {
-            if (dataCoach.lastName.length < 3) {
-              this.lastname.err = "Lastname must more than three chars.";
+            if (key.value.length < 3) {
+              this.check = false;
+              key.err = "Last name must more than three chars.";
+            } else {
+              key.err = "";
+              this.check = true;
             }
           }
           break;
         case "description":
-          if (dataCoach.description.length == "") {
-            this.description.err = "Description must not be empty.";
+          if (key.value.length == "") {
             this.check = false;
+            key.err = "Description must not be empty.";
+          } else {
+            if (key.value.length > 100) {
+              this.check = false;
+              key.err = "You can only enter a maximum of 100 characters.";
+            } else {
+              (key.err = ""), (this.check = true);
+            }
+          }
+          break;
+        case "hRate":
+          if (key.value.length == 0) {
+            this.check = false;
+            key.err = "Rate must be greater than 0.";
+          } else {
+            if (key.value < 0) {
+              this.check = false;
+              key.err = "The number must be greater than 0";
+            } else {
+              (key.err = ""), (this.check = true);
+            }
+          }
+          break;
+        case "areas":
+          if (key.value.length == 0) {
+            this.check = false;
+            key.err = "At least one expertise must be selected.";
+          } else {
+            key.err = "";
+            this.check = true;
           }
           break;
       }
-      return this.check;
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .form-control {
   margin: 0.5rem 0;
 }
@@ -180,5 +230,13 @@ export default {
   font-weight: 400;
   display: inline;
   margin: 0 0 0 0.5rem;
+}
+.error input,
+.error textarea {
+  border: 1px solid red;
+}
+.error label {
+  color: red;
+  font-weight: 600;
 }
 </style>

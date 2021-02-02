@@ -9,7 +9,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang = "scss">
 .badge {
   background-color: #ccc;
   color: #252525;

@@ -26,7 +26,6 @@ body {
   margin: 0;
 }
 
-
 h3,
 h4 {
   margin: 0.5rem 0;
@@ -42,7 +41,6 @@ h4 {
   opacity: 1;
   transform: translateY(0px);
 }
-
 .open-leave-active {
   transition: 1s;
 }
@@ -55,4 +53,10 @@ h4 {
   transform: translateY(20px);
 }
 
+input:focus,
+textarea:focus {
+  outline: none;
+  border: 1px solid #3d008d !important;
+  background-color: rgba(61, 0, 141, 0.2);
+}
 </style>
