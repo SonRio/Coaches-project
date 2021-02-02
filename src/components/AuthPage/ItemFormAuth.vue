@@ -67,7 +67,7 @@ export default {
             )
             .then((res) => {
               console.log("REGISTER CORRECTED");
-              localStorage.setItem('userId',JSON.stringify(res.data));
+              localStorage.setItem("userId", JSON.stringify(res.data));
             })
             .catch((err) => {
               console.log(err);
@@ -89,7 +89,11 @@ export default {
                 email: res.data.email,
               };
               localStorage.setItem("checkLogin", JSON.stringify(checkLogin));
-              this.$router.push({ path: "/coaches" });
+              if (this.$route.query.redirect) {
+                this.$router.push({ path: "/register" });
+              } else {
+                this.$router.push({ path: "/coaches" });
+              }
               this.$store.state.tokenId = checkLogin;
             })
             .catch((err) => {

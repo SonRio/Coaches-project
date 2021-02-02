@@ -9,7 +9,7 @@
           <router-link :active="isActive" to="/coaches"> All Coaches </router-link>
         </li>
         <li v-if="getTokenId != null && getTokenId != '' ">
-          <router-link to="/request"> Request </router-link>
+          <router-link to="/requests"> Request </router-link>
         </li>
         <li v-if="getTokenId != null && getTokenId != '' ">
           <item-button @click="handleLogout()">Logout</item-button>

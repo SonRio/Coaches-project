@@ -52,6 +52,7 @@ export default {
   methods: {
     handleSubmit() {
       let user = JSON.parse( localStorage.getItem("checkLogin"));
+      
       let dataCoach = {
         areas: this.areas,
         description: this.description,

@@ -14,11 +14,11 @@ const routes = [{
     components: {
       default: Home,
     },
-    children: [{
-      path: '/coaches/:id',
-      name: 'Detail',
-      component: () => import( /* webpackChunkName: "about" */ '../views/Detail.vue'),
-    }]
+    // children: [{
+    //   path: '/coaches/:id',
+    //   name: 'Detail',
+    //   component: () => import( /* webpackChunkName: "about" */ '../views/Detail.vue'),
+    // }]
   },
   {
     path: '/auth',
@@ -35,11 +35,16 @@ const routes = [{
     name: 'RegisterCoach',
     component: () => import( /* webpackChunkName: "about" */ '../views/RegisterCoach.vue'),
   },
-  // {
-  //   path: '/detail/:id',
-  //   name: 'Detail',
-  //   component: () => import( /* webpackChunkName: "about" */ '../views/Detail.vue')
-  // },
+  {
+    path: '/detail/:id',
+    name: 'Detail',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Detail.vue')
+  },
+  {
+    path: '/requests',
+    name: 'Request',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Request.vue')
+  },
   {
     path: '/:NotFound(.*)*',
     component: () => import( /* webpackChunkName: "about" */ '../views/NotFound.vue')

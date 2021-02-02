@@ -9,10 +9,11 @@ export default createStore({
     areas: [],
     coaches: [],
     temp: [],
-    tokenId: localStorage.getItem('checkLogin'),
+    tokenId: JSON.parse(localStorage.getItem('checkLogin')),
     linkTo: '/coaches',
     status: '',
-    checkCoach: ''
+    checkCoach: '',
+    request : []
   },
   getters: {
     setTokenId: (state) => {
@@ -22,7 +23,7 @@ export default createStore({
       if (state.tokenId != null && state.tokenId != '') {
         state.linkTo = '/register'
       } else {
-        state.linkTo = '/auth'
+        state.linkTo = { path : '/auth',query : { redirect : 'register'}}
       }
       return state.linkTo;
     }
@@ -34,7 +35,11 @@ export default createStore({
     setTempData(state, temp) {
       state.temp = temp;
     },
+    setDataRequest(state, request) {
+      state.request = request;
+    },
     getResultPost(state, status) {
+      console.log(status);
       state.status = status;
     },
     setCheckCoach(state, check) {
@@ -48,7 +53,15 @@ export default createStore({
         .then((res) => {
           state.commit('setDefaultData', res.data);
           state.commit('setCheckCoach', Object.keys(res.data));
-          state.commit('setTempData', Object.values(res.data))
+          state.commit('setTempData', res.data)
+        }).catch(err => console.log(err));
+    },
+    getDataRequest(state){
+      let userId = state.state.tokenId.localId
+      axios
+        .get(`https://coaches-project-8d77f-default-rtdb.firebaseio.com/request/${userId}.json`)
+        .then((res) => {
+          state.commit('setDataRequest', res.data)
         }).catch(err => console.log(err));
     },
     getDatafilter(store, listFilter) {
@@ -75,11 +88,11 @@ export default createStore({
     handlePostDataRequest(state, payLoad) {
       // console.log(state,payload.url);
       axios.post(payLoad.url, payLoad.data).then((res) => {
-        console.log('POST CORRECTED');
-        state.commit('getResultPost', res.data);
+        console.log('POST REQUESTS CORRECTED');
+        console.log(res);
       }).catch(err => {
-        console.log('POST FAILSE');
-        state.commit('getResultPost', err.message)
+        console.log('POST REQUESTS FAILSE');
+        console.log(err);
       })
     }
   },

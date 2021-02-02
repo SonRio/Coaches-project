@@ -1,15 +1,15 @@
 <template>
-  <form action="#">
+  <form>
     <div class="form-control">
       <label for="email">Your E-mail</label>
-      <input type="email" id="email" />
+      <input type="email" id="email" v-model="email" />
     </div>
     <div class="form-control">
       <label for="message">Message</label>
-      <textarea rows="5" id="message"></textarea>
+      <textarea rows="5" id="message" required v-model="messages"></textarea>
     </div>
     <div class="action">
-      <item-button>Send Message</item-button>
+      <item-button @click="handleSubmitRequest">Send Message</item-button>
     </div>
   </form>
 </template>
@@ -18,6 +18,33 @@
 import ItemButton from "../common/ItemButton.vue";
 export default {
   components: { ItemButton },
+  data() {
+    return {
+      email: "",
+      messages: "",
+      err: false,
+    };
+  },
+  methods: {
+    handleSubmitRequest() {
+      let dataPostRequest = {
+        userEmail: this.email,
+        message: this.messages,
+      };
+      if (this.email == "" && this.messages == "") {
+        this.err = true;
+        event.preventDefault();
+      } else {
+        this.$store.dispatch({
+          type: "handlePostDataRequest",
+          url: `https://coaches-project-8d77f-default-rtdb.firebaseio.com/request/${this.$route.params.id}.json`,
+          data: dataPostRequest,
+        });
+        this.$router.push({ path: "/coaches" });
+        event.preventDefault();
+      }
+    },
+  },
 };
 </script>
 
