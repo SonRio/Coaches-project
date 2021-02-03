@@ -1,5 +1,15 @@
 <template>
-  <item-pop></item-pop>
+  <teleport to="body">
+    <item-pop :titlePopup="loading" v-if="$store.state.loading">
+      <item-lazy-load></item-lazy-load>
+    </item-pop>
+    <item-pop :titlePopup="check">
+      <p>{{ getTextErr }}</p>
+    </item-pop>
+
+    <item-modal></item-modal>
+  </teleport>
+
   <form>
     <div class="form-control">
       <label for="email">E-mail</label>
@@ -24,8 +34,10 @@
 import ItemButton from "../common/ItemButton.vue";
 import ItemLink from "../common/ItemLink.vue";
 import ItemPop from "../common/ItemPop.vue";
+import ItemModal from "../common/ItemModal.vue";
+import ItemLazyLoad from "../common/itemLazyLoad.vue";
 export default {
-  components: { ItemButton, ItemLink, ItemPop },
+  components: { ItemButton, ItemLink, ItemPop, ItemModal, ItemLazyLoad },
   data() {
     return {
       linkToReg: "#",
@@ -36,9 +48,8 @@ export default {
       password: "",
       errors: false,
       path: "",
-      titlePopup: "",
-      openPopup: false,
-      contentPopup: "",
+      loading: "Authenticating...",
+      check: "An error occurred",
     };
   },
   methods: {
@@ -89,6 +100,15 @@ export default {
   },
   created() {
     this.handleChangeAction();
+  },
+  computed: {
+    getTextErr() {
+      let text = "";
+      if (!this.$store.state.checkLogin) {
+        text = "Failed to authenticate. Check your login data.";
+      }
+      return text;
+    },
   },
 };
 </script>

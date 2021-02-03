@@ -13,7 +13,8 @@ export default createStore({
     linkTo: '/coaches',
     status: '',
     request: [],
-    checkLogin: false,
+    checkLogin: true,
+    loading : true
   },
   getters: {
     getTokenId: (state) => {
@@ -51,6 +52,9 @@ export default createStore({
     },
     setTokenId(state, tokenId) {
       state.tokenId = tokenId;
+    },
+    setLoading(state,loading) {
+      return state.loading = loading;
     }
   },
   actions: {
