@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     getTokenId() {
-      return this.$store.getters.setTokenId;
+      return this.$store.getters.getTokenId;
     },
   },
 };

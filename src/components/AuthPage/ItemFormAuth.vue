@@ -1,4 +1,5 @@
 <template>
+  <item-pop></item-pop>
   <form>
     <div class="form-control">
       <label for="email">E-mail</label>
@@ -19,11 +20,12 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import ItemButton from "../common/ItemButton.vue";
 import ItemLink from "../common/ItemLink.vue";
+import ItemPop from "../common/ItemPop.vue";
 export default {
-  components: { ItemButton, ItemLink },
+  components: { ItemButton, ItemLink, ItemPop },
   data() {
     return {
       linkToReg: "#",
@@ -34,6 +36,9 @@ export default {
       password: "",
       errors: false,
       path: "",
+      titlePopup: "",
+      openPopup: false,
+      contentPopup: "",
     };
   },
   methods: {
@@ -60,45 +65,24 @@ export default {
           // SIGN UP
           console.log("SIGN UP");
           event.preventDefault();
-          axios
-            .post(
+          this.$store.dispatch({
+            type: "handleSignUp",
+            url:
               "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCe3EbXvHvc8FM4F00XoX8Fm_hOQDDctic",
-              dataPost
-            )
-            .then((res) => {
-              console.log("REGISTER CORRECTED");
-              localStorage.setItem("userId", JSON.stringify(res.data));
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+            data: dataPost,
+          });
         } else {
           // LOGIN
           console.log("LOGIN");
           event.preventDefault();
-          axios
-            .post(
+          this.$store.dispatch({
+            type: "handleLogin",
+            url:
               "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCe3EbXvHvc8FM4F00XoX8Fm_hOQDDctic",
-              dataPost
-            )
-            .then((res) => {
-              console.log("LOGIN CORRECTED");
-              let checkLogin = {
-                idToken: res.data.idToken,
-                localId: res.data.localId,
-                email: res.data.email,
-              };
-              localStorage.setItem("checkLogin", JSON.stringify(checkLogin));
-              if (this.$route.query.redirect) {
-                this.$router.push({ path: "/register" });
-              } else {
-                this.$router.push({ path: "/coaches" });
-              }
-              this.$store.state.tokenId = checkLogin;
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+            data: dataPost,
+            route: this.$route,
+            router: this.$router,
+          });
         }
       }
     },

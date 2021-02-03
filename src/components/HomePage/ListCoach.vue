@@ -43,15 +43,15 @@ export default {
       }
     },
     getTokenId() {
-      if (this.$store.getters.setTokenId != null) {
-        return this.$store.getters.setTokenId;
+      if (this.$store.getters.getTokenId != null) {
+        return this.$store.getters.getTokenId;
       } else {
         return "";
       }
     },
     getLinkTo() {
-      if (this.$store.getters.setLinkTo != null) {
-        return this.$store.getters.setLinkTo;
+      if (this.$store.getters.getLinkTo != null) {
+        return this.$store.getters.getLinkTo;
       } else {
         return "/coaches";
       }

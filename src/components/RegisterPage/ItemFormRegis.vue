@@ -6,7 +6,7 @@
         type="text"
         v-model="firstname.value"
         id="firstname"
-        @keyup="handleCheckAll()"
+        @keyup="handleCheckErrItem('firstname', firstname)"
       />
       <p v-if="firstname.err">{{ firstname.err }}</p>
     </div>
@@ -16,7 +16,7 @@
         type="text"
         v-model="lastname.value"
         id="lastname"
-        @keyup="handleCheckAll()"
+        @keyup="handleCheckErrItem('lastname', lastname)"
       />
       <p v-if="lastname.err">{{ lastname.err }}</p>
     </div>
@@ -27,13 +27,14 @@
         v-model="description.value"
         id="description"
         rows="5"
-        @keyup="handleCheckAll()"
+         @keyup="handleCheckErrItem('description', description)"
       ></textarea>
       <p v-if="description.err">{{ lastname.err }}</p>
     </div>
     <div class="form-control" :class="hRate.err == '' ? '' : 'error'">
       <label for="hRate">Hourly Rate</label>
-      <input type="number" v-model="hRate.value" id="hRate" @keyup="handleCheckAll()" />
+      <input type="number" v-model="hRate.value" id="hRate" 
+      @keyup="handleCheckErrItem('hRate', hRate)" />
       <p v-if="hRate.err">{{ hRate.err }}</p>
     </div>
     <div class="form-control">
@@ -44,7 +45,7 @@
           v-model="areas.value"
           value="frontend"
           id="frontend"
-          @change="handleCheckAll()"
+          @change="handleCheckErrItem('areas', areas)"
         />
         <label for="frontend">Frontend Deverloper</label>
       </div>
@@ -54,7 +55,7 @@
           v-model="areas.value"
           value="backend"
           id="backend"
-          @change="handleCheckAll()"
+          @change="handleCheckErrItem('areas', areas)"
         />
         <label for="backend">Backend Deverloper</label>
       </div>
@@ -64,7 +65,7 @@
           v-model="areas.value"
           value="career"
           id="career"
-          @change="handleCheckAll()"
+          @change="handleCheckErrItem('areas', areas)"
         />
         <label for="career">Career Deverloper</label>
       </div>
@@ -109,21 +110,21 @@ export default {
       this.handleCheckAll();
       if (this.check) {
         console.log("post dc nha");
-        // let user = JSON.parse( localStorage.getItem("checkLogin"));
-        // let dataCoach = {
-        //   areas: this.areas.value,
-        //   description: this.description.value,
-        //   firstName: this.firstname.value,
-        //   hourlyRate: this.hRate.value,
-        //   lastName: this.lastname.value,
-        // };
-        // // console.log(dataCoach);
-        // this.$store.dispatch({
-        //   type: "handlePostDataCoach",
-        //   url: `https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches/${user.localId}.json?auth=${user.idToken}`,
-        //   data: dataCoach,
-        // });
-        // this.$router.push("/coaches");
+        let user = JSON.parse( localStorage.getItem("checkLogin"));
+        let dataCoach = {
+          areas: this.areas.value,
+          description: this.description.value,
+          firstName: this.firstname.value,
+          hourlyRate: this.hRate.value,
+          lastName: this.lastname.value,
+        };
+        // console.log(dataCoach);
+        this.$store.dispatch({
+          type: "handlePostDataCoach",
+          url: `https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches/${user.localId}.json?auth=${user.idToken}`,
+          data: dataCoach,
+        });
+        this.$router.push("/coaches");
       }
     },
     handleCheckAll() {

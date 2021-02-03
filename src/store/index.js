@@ -12,20 +12,26 @@ export default createStore({
     tokenId: JSON.parse(localStorage.getItem('checkLogin')),
     linkTo: '/coaches',
     status: '',
-    request : []
+    request: [],
+    checkLogin: false,
   },
   getters: {
-    setTokenId: (state) => {
+    getTokenId: (state) => {
       return state.tokenId;
     },
-    setLinkTo: (state) => {
+    getLinkTo: (state) => {
       if (state.tokenId != null && state.tokenId != '') {
         state.linkTo = '/register'
       } else {
-        state.linkTo = { path : '/auth',query : { redirect : 'register'}}
+        state.linkTo = {
+          path: '/auth',
+          query: {
+            redirect: 'register'
+          }
+        }
       }
       return state.linkTo;
-    }
+    },
   },
   mutations: {
     setDefaultData(state, coaches) {
@@ -37,12 +43,18 @@ export default createStore({
     setDataRequest(state, request) {
       state.request = request;
     },
-    getResultPost(state, status) {
-      console.log(status);
+    setResultPost(state, status) {
       state.status = status;
     },
+    setCheckLogin(state, checkLogin) {
+      state.checkLogin = checkLogin;
+    },
+    setTokenId(state, tokenId) {
+      state.tokenId = tokenId;
+    }
   },
   actions: {
+    // GET DATA COACHES DEFAUT FROM API
     getDefaultData(state) {
       axios
         .get("https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches.json")
@@ -51,7 +63,8 @@ export default createStore({
           state.commit('setTempData', res.data)
         }).catch(err => console.log(err));
     },
-    getDataRequest(state){
+    // GET DATA REQUEST FOR MEM FROM API
+    getDataRequest(state) {
       let userId = state.state.tokenId.localId
       axios
         .get(`https://coaches-project-8d77f-default-rtdb.firebaseio.com/request/${userId}.json`)
@@ -59,6 +72,7 @@ export default createStore({
           state.commit('setDataRequest', res.data)
         }).catch(err => console.log(err));
     },
+    // GET DATA TEMP TO SS WITH FILTER
     getDatafilter(store, listFilter) {
       let temp = Object.values(store.state.temp).filter((item) => {
         let check;
@@ -71,15 +85,17 @@ export default createStore({
       })
       store.state.coaches = temp;
     },
+    // HANDLE REGISTER COACH
     handlePostDataCoach(state, payLoad) {
       axios.put(payLoad.url, payLoad.data).then((res) => {
         console.log('POST CORRECTED');
-        state.commit('getResultPost', res.data);
+        state.commit('setResultPost', res.data);
       }).catch(err => {
         console.log('POST FAILSE');
-        state.commit('getResultPost', err.message)
+        state.commit('setResultPost', err.message)
       })
     },
+    // HANDLE POST REQUEST FROM USER
     handlePostDataRequest(state, payLoad) {
       axios.post(payLoad.url, payLoad.data).then((res) => {
         console.log('POST REQUESTS CORRECTED');
@@ -88,7 +104,40 @@ export default createStore({
         console.log('POST REQUESTS FAILSE');
         console.log(err);
       })
-    }
+    },
+    // HANDLE SIGN FOR USER
+    handleSignUp(state, payLoad) {
+      axios.post(payLoad.url, payLoad.data).then(res => {
+        console.log('SignUp CORRECTED');
+        localStorage.setItem("userId", JSON.stringify(res.data));
+      }).catch(err => console.log(err))
+    },
+    // HANDLE LOGIN FOR MEM
+    handleLogin(state, payLoad) {
+      axios.post(payLoad.url, payLoad.data).then(res => {
+        console.log("LOGIN CORRECTED");
+        let checkLogin = {
+          idToken: res.data.idToken,
+          localId: res.data.localId,
+          email: res.data.email,
+        };
+        localStorage.setItem("checkLogin", JSON.stringify(checkLogin));
+        state.commit('setTokenId', checkLogin);
+        state.commit('setCheckLogin', true);
+        if (payLoad.route.query.redirect) {
+          payLoad.router.push({
+            path: "/register"
+          });
+        } else {
+          payLoad.router.push({
+            path: "/coaches"
+          });
+        }
+      }).catch(err => {
+        state.commit('setCheckLogin', false);
+        console.log(err);
+      })
+    },
   },
 
 })
