@@ -30,27 +30,19 @@ h3,
 h4 {
   margin: 0.5rem 0;
 }
-.open-enter-active {
-  transition: 1s;
-}
-.open-enter-from {
-  opacity: 0;
-  transform: translateY(-20px);
-}
-.open-enter-to {
-  opacity: 1;
-  transform: translateY(0px);
-}
+.open-enter-active,
 .open-leave-active {
   transition: 1s;
 }
+.open-enter-from,
+.open-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+.open-enter-to,
 .open-leave-from {
   opacity: 1;
   transform: translateY(0px);
-}
-.open-leave-to {
-  opacity: 0;
-  transform: translateY(20px);
 }
 
 input:focus,

@@ -1,10 +1,11 @@
 <template>
+
   <transition appear name="open" id="detail">
     <div>
       <section>
         <item-card>
-          <h2>{{ detailCoach.firstName }}</h2>
-          <h3>${{ detailCoach.hourlyRate }}/hour</h3>
+          <h2>{{ getDataDetail.firstName }}</h2>
+          <h3>${{ getDataDetail.hourlyRate }}/hour</h3>
         </item-card>
       </section>
       <section>
@@ -23,13 +24,13 @@
       <section>
         <item-card>
           <item-badge
-            v-for="(itemArea, index) in detailCoach.areas"
+            v-for="(itemArea, index) in getDataDetail.areas"
             :key="index"
             :class="itemArea"
           >
             {{ itemArea.toUpperCase() }}
           </item-badge>
-          <p>{{ detailCoach.description }}</p>
+          <p>{{ getDataDetail.description }}</p>
         </item-card>
       </section>
     </div>
@@ -40,7 +41,7 @@
 import ItemBadge from "../components/common/ItemBadge.vue";
 import ItemCard from "../components/common/ItemCard.vue";
 import ItemLink from "../components/common/ItemLink.vue";
-import axios from "axios";
+// import axios from "axios";
 export default {
   components: { ItemCard, ItemBadge, ItemLink },
   data() {
@@ -50,29 +51,18 @@ export default {
       LinkToContact: "/contact",
     };
   },
-  created() {
-    this.getDetail();
+  mounted() {
+    this.id = this.$route.params.id;
+    this.$store.dispatch({
+      type: "getDataDetail",
+      url: `https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches/${this.id}.json/`,
+    });
   },
-  methods: {
-    getDetail() {
-      this.id = this.$route.params.id;
-      axios
-        .get(
-          `https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches/${this.id}.json/`
-        )
-        .then((res) => {
-          this.detailCoach = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-  },
-  watch: {
-    $route() {
-      this.getDetail();
-    },
-  },
+  computed : {
+    getDataDetail(){
+      return this.$store.state.dataDetail;
+    }
+  }
 };
 </script>
 

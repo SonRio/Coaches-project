@@ -1,11 +1,14 @@
 <template>
+
   <teleport to="body">
     <item-pop :titlePopup="loading" v-if="$store.state.loading">
       <item-lazy-load></item-lazy-load>
     </item-pop>
-    <item-pop :titlePopup="check" v-if="$store.state.checkLogin == false">
-      <p>{{ getTextErr }}</p>
-    </item-pop>
+    <transition name="popup">
+      <item-pop :titlePopup="check" v-if="$store.state.checkLogin == false">
+        <p>{{ getTextErr }}</p>
+      </item-pop>
+    </transition>
     <item-modal v-if="$store.state.loading"></item-modal>
   </teleport>
 
@@ -62,7 +65,7 @@ export default {
       }
     },
     handleSubmit() {
-      if (this.email == "" && this.password == "") {
+      if (this.email == "" && this.password == "" || this.password.length < 6) {
         this.errors = true;
         event.preventDefault();
       } else {
@@ -114,20 +117,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.popup-enter-from,
 .popup-leave-to {
   opacity: 0;
   transform: scale(0.5);
 }
-.popup-enter-to,
 .popup-leave-from {
   opacity: 1;
   transform: scale(1);
 }
-.popup-enter-active,
 .popup-leave-active {
   transition: 0.5s;
 }
+
 form {
   margin: 1rem;
   padding: 1rem;

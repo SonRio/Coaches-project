@@ -37,18 +37,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.popup-enter-from,
-.popup-leave-to {
+.popup-enter-from {
   opacity: 0;
   transform: scale(0.5);
 }
-.popup-enter-to,
-.popup-leave-from {
+.popup-enter-to {
   opacity: 1;
   transform: scale(1);
 }
-.popup-enter-active,
-.popup-leave-active {
+.popup-enter-active {
   transition: 0.5s;
 }
 

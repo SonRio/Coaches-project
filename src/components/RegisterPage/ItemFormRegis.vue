@@ -1,79 +1,79 @@
 <template>
   <form @submit="handleSubmit" method="post" novalidate="true">
-    <div class="form-control" :class="firstname.err == '' ? '' : 'error'">
+    <div class="form-control" :class="dataCoach.firstname.err == '' ? '' : 'error'">
       <label for="firstname">Firstname</label>
       <input
         type="text"
-        v-model="firstname.value"
+        v-model="dataCoach.firstname.value"
         id="firstname"
-        @keyup="handleCheckErrItem('firstname', firstname)"
+        @keyup="handleCheckErrItem('firstname', dataCoach.firstname)"
       />
-      <p v-if="firstname.err">{{ firstname.err }}</p>
+      <p v-if="dataCoach.firstname.err">{{ dataCoach.firstname.err }}</p>
     </div>
-    <div class="form-control" :class="lastname.err == '' ? '' : 'error'">
+    <div class="form-control" :class="dataCoach.lastname.err == '' ? '' : 'error'">
       <label for="lastname">Lastname</label>
       <input
         type="text"
-        v-model="lastname.value"
+        v-model="dataCoach.lastname.value"
         id="lastname"
-        @keyup="handleCheckErrItem('lastname', lastname)"
+        @keyup="handleCheckErrItem('lastname', dataCoach.lastname)"
       />
-      <p v-if="lastname.err">{{ lastname.err }}</p>
+      <p v-if="dataCoach.lastname.err">{{ dataCoach.lastname.err }}</p>
     </div>
-    <div class="form-control" :class="description.err == '' ? '' : 'error'">
+    <div class="form-control" :class="dataCoach.description.err == '' ? '' : 'error'">
       <label for="description">Description</label>
       <textarea
         type="text"
-        v-model="description.value"
+        v-model="dataCoach.description.value"
         id="description"
         rows="5"
-        @keyup="handleCheckErrItem('description', description)"
+        @keyup="handleCheckErrItem('description', dataCoach.description)"
       ></textarea>
-      <p v-if="description.err">{{ lastname.err }}</p>
+      <p v-if="dataCoach.description.err">{{ dataCoach.description.err }}</p>
     </div>
-    <div class="form-control" :class="hRate.err == '' ? '' : 'error'">
+    <div class="form-control" :class="dataCoach.hRate.err == '' ? '' : 'error'">
       <label for="hRate">Hourly Rate</label>
       <input
         type="number"
-        v-model="hRate.value"
+        v-model="dataCoach.hRate.value"
         id="hRate"
-        @keyup="handleCheckErrItem('hRate', hRate)"
+        @keyup="handleCheckErrItem('hRate', dataCoach.hRate)"
       />
-      <p v-if="hRate.err">{{ hRate.err }}</p>
+      <p v-if="dataCoach.hRate.err">{{ dataCoach.hRate.err }}</p>
     </div>
     <div class="form-control">
       <h3>Areas of Expertise</h3>
-      <div :class="areas.err == '' ? '' : 'error'">
+      <div :class="dataCoach.areas.err == '' ? '' : 'error'">
         <input
           type="checkbox"
-          v-model="areas.value"
+          v-model="dataCoach.areas.value"
           value="frontend"
           id="frontend"
-          @change="handleCheckErrItem('areas', areas)"
+          @change="handleCheckErrItem('areas', dataCoach.areas)"
         />
         <label for="frontend">Frontend Deverloper</label>
       </div>
-      <div :class="areas.err == '' ? '' : 'error'">
+      <div :class="dataCoach.areas.err == '' ? '' : 'error'">
         <input
           type="checkbox"
-          v-model="areas.value"
+          v-model="dataCoach.areas.value"
           value="backend"
           id="backend"
-          @change="handleCheckErrItem('areas', areas)"
+          @change="handleCheckErrItem('areas', dataCoach.areas)"
         />
         <label for="backend">Backend Deverloper</label>
       </div>
-      <div :class="areas.err == '' ? '' : 'error'">
+      <div :class="dataCoach.areas.err == '' ? '' : 'error'">
         <input
           type="checkbox"
-          v-model="areas.value"
+          v-model="dataCoach.areas.value"
           value="career"
           id="career"
-          @change="handleCheckErrItem('areas', areas)"
+          @change="handleCheckErrItem('areas', dataCoach.areas)"
         />
         <label for="career">Career Deverloper</label>
       </div>
-      <p v-if="areas.err">{{ areas.err }}</p>
+      <p v-if="dataCoach.areas.err">{{ dataCoach.areas.err }}</p>
     </div>
     <item-button @click.prevent="handleSubmit()" type="submit"> Register </item-button>
   </form>
@@ -86,41 +86,48 @@ export default {
   components: { ItemButton },
   data() {
     return {
-      firstname: {
-        value: "",
-        err: "",
+      dataCoach: {
+        firstname: {
+          value: "",
+          err: "",
+        },
+        lastname: {
+          value: "",
+          err: "",
+        },
+        description: {
+          value: "",
+          err: "",
+        },
+        hRate: {
+          value: "",
+          err: "",
+        },
+        areas: {
+          value: [],
+          err: "",
+        },
       },
-      lastname: {
-        value: "",
-        err: "",
-      },
-      description: {
-        value: "",
-        err: "",
-      },
-      hRate: {
-        value: "",
-        err: "",
-      },
-      areas: {
-        value: [],
-        err: "",
-      },
+
       check: "",
     };
   },
   methods: {
     handleSubmit() {
       this.handleCheckAll();
+      Object.keys(this.dataCoach).forEach((elm) => {
+        if (this.dataCoach[elm].err != "") {
+          this.check = false;
+        }
+      });
       if (this.check) {
-        console.log("post dc nha");
         let user = JSON.parse(localStorage.getItem("checkLogin"));
         let dataCoach = {
-          areas: this.areas.value,
-          description: this.description.value,
-          firstName: this.firstname.value,
-          hourlyRate: this.hRate.value,
-          lastName: this.lastname.value,
+          areas: this.dataCoach.areas.value,
+          description: this.dataCoach.description.value,
+          firstName: this.dataCoach.firstname.value,
+          hourlyRate: this.dataCoach.hRate.value,
+          lastName: this.dataCoach.lastname.value,
         };
         // console.log(dataCoach);
         this.$store.dispatch({
@@ -132,11 +139,9 @@ export default {
       }
     },
     handleCheckAll() {
-      this.handleCheckErrItem("firstname", this.firstname);
-      this.handleCheckErrItem("lastname", this.lastname);
-      this.handleCheckErrItem("description", this.description);
-      this.handleCheckErrItem("hRate", this.hRate);
-      this.handleCheckErrItem("areas", this.areas);
+      Object.keys(this.dataCoach).forEach((elm) => {
+        this.handleCheckErrItem(elm, this.dataCoach[elm]);
+      });
     },
     handleCheckErrItem(item, key) {
       switch (item) {
@@ -169,7 +174,7 @@ export default {
           }
           break;
         case "description":
-          if (key.value.length == "") {
+          if (key.value.length == 0) {
             this.check = false;
             key.err = "Description must not be empty.";
           } else {
@@ -203,6 +208,8 @@ export default {
             this.check = true;
           }
           break;
+        default:
+          this.check;
       }
     },
   },
@@ -243,8 +250,8 @@ export default {
     border: 1px solid red;
   }
   label {
-  color: red;
-  font-weight: 600;
-}
+    color: red;
+    font-weight: 600;
+  }
 }
 </style>

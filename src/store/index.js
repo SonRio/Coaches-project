@@ -9,6 +9,7 @@ export default createStore({
     areas: [],
     coaches: [],
     temp: [],
+    dataDetail : [],
     tokenId: JSON.parse(localStorage.getItem('checkLogin')),
     linkTo: '/coaches',
     status: '',
@@ -44,6 +45,9 @@ export default createStore({
     SET_DATA_REQUEST(state, request) {
       state.request = request;
     },
+    SET_DATA_DETAIL(state, dataDetail) {
+      state.dataDetail = dataDetail;
+    },
     SET_RESULT_POST(state, status) {
       state.status = status;
     },
@@ -59,14 +63,21 @@ export default createStore({
   },
   actions: {
     // GET DATA COACHES DEFAUT FROM API
-    getDefaultData(store) {
-      store.commit('SET_LOADING', true);
+    getDefaultData({commit}) {
+      commit('SET_LOADING', true);
       axios
         .get("https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches.json")
         .then((res) => {
-          store.commit('SET_DEFAULT_DATA', res.data);
-          store.commit('SET_TEMP_DATA', res.data)
-          store.commit('SET_LOADING', false);
+          commit('SET_DEFAULT_DATA', res.data);
+          commit('SET_TEMP_DATA', res.data)
+          commit('SET_LOADING', false);
+        }).catch(err => console.log(err));
+    },
+    getDataDetail({commit},payLoad) {
+      axios
+        .get(payLoad.url)
+        .then((res) => {
+          commit('SET_DATA_DETAIL', res.data);
         }).catch(err => console.log(err));
     },
     // GET DATA REQUEST FOR MEM FROM API
