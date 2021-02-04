@@ -1,10 +1,10 @@
 <template>
   <teleport to="body">
     <transition name="popup">
-    <item-pop :titlePopup="loading" v-if="$store.state.loading">
-      <item-lazy-load></item-lazy-load>
-    </item-pop>
-    </transition>>
+      <item-pop :titlePopup="loading" v-if="$store.state.loading">
+        <item-lazy-load></item-lazy-load>
+      </item-pop>
+    </transition>
     <transition name="popup">
       <item-pop :titlePopup="check" v-if="$store.state.checkLogin == false">
         <p>{{ getTextErr }}</p>
@@ -15,7 +15,7 @@
     ></item-modal>
   </teleport>
 
-  <form>
+  <form @submit.prevent="handleSubmit">
     <div class="form-control">
       <label for="email">E-mail</label>
       <input type="email" v-model="email" id="email" />
@@ -27,7 +27,7 @@
     <p v-if="errors">
       Please enter a valid email and password (must be at least 6 characters long).
     </p>
-    <item-button @click="handleSubmit()"> {{ textBtn }} </item-button>
+    <item-button> {{ textBtn }} </item-button>
     <item-link @click.prevent="handleChangeAction()" class="flat" :linkTo="linkToReg">
       {{ textLink }} instead
     </item-link>
@@ -68,7 +68,7 @@ export default {
       }
     },
     handleSubmit() {
-      if ((this.email == "" && this.password == "") || this.password.length < 6) {
+      if (this.email == "" || this.messages == "" || this.password.length < 6) {
         this.errors = true;
         event.preventDefault();
       } else {
@@ -126,14 +126,17 @@ export default {
   opacity: 0;
   transform: scale(0.7);
 }
-.popup-leave-from ,
+.popup-leave-from,
 .popup-enter-to {
   opacity: 1;
   transform: scale(1);
 }
-.popup-leave-active,
+
 .popup-enter-active {
-  transition: all 0.7s;
+  transition: all 0.5s;
+}
+.popup-leave-active {
+  transition: all 0.4s;
 }
 
 form {

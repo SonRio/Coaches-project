@@ -37,9 +37,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
-
 dialog {
   position: fixed;
   top: 20vh;

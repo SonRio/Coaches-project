@@ -1,5 +1,6 @@
 <template>
   <section>
+    {{setDataFilter}}
     <item-card>
       <h2>Find Your Coach</h2>
       <span class="filter-option">

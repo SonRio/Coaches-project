@@ -6,7 +6,7 @@ import axios from "axios";
 
 export default createStore({
   state: {
-    areas: [],
+    areas: ["frontend", "backend", "career"],
     coaches: [],
     temp: [],
     dataDetail: [],
@@ -43,6 +43,9 @@ export default createStore({
     SET_TEMP_DATA(state, temp) {
       state.temp = temp;
     },
+    SET_DATA_FILTER(state, areas) {
+      state.areas = areas;
+    },
     SET_DATA_REQUEST(state, request) {
       state.request = request;
     },
@@ -67,7 +70,6 @@ export default createStore({
     getDefaultData({
       commit
     }) {
-      commit('SET_LOADING', true);
       axios
         .get("https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches.json")
         .then((res) => {
@@ -96,10 +98,11 @@ export default createStore({
         }).catch(err => console.log(err));
     },
     // GET DATA TEMP TO SS WITH FILTER
-    getDatafilter(store, listFilter) {
+    getDatafilter(store, payLoad) {
+      store.commit('SET_DATA_FILTER',payLoad.listFilter)
       let temp = Object.values(store.state.temp).filter((item) => {
         let check;
-        listFilter.listFilter.forEach(elm => {
+        payLoad.listFilter.forEach(elm => {
           if (item.areas.indexOf(elm) != -1) {
             check = true
           }

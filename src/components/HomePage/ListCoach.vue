@@ -74,11 +74,19 @@ export default {
     },
   },
   mounted() {
+    this.$store.commit("SET_LOADING", true);
     this.$store.dispatch("getDefaultData");
   },
   methods: {
     handleRefresh() {
-      this.$store.dispatch("getDefaultData");
+      this.$store.commit("SET_LOADING", true);
+      setTimeout(() => {
+        this.$store.commit("SET_LOADING", false);
+      }, 300);
+      this.$store.dispatch({
+        type: "getDatafilter",
+        listFilter: this.$store.state.areas,
+      });
     },
   },
   watch: {
