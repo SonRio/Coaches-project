@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.prevent="handleSubmitRequest">
     <div class="form-control">
       <label for="email">Your E-mail</label>
       <input type="email" id="email" v-model="email" />
@@ -8,8 +8,11 @@
       <label for="message">Message</label>
       <textarea rows="5" id="message" required v-model="messages"></textarea>
     </div>
+    <p v-if="errors" class="errors">
+      Please enter a valid email and non-empty message.
+    </p>
     <div class="action">
-      <item-button @click="handleSubmitRequest">Send Message</item-button>
+      <item-button>Send Message</item-button>
     </div>
   </form>
 </template>
@@ -22,7 +25,7 @@ export default {
     return {
       email: "",
       messages: "",
-      err: false,
+      errors: false,
     };
   },
   methods: {
@@ -31,9 +34,8 @@ export default {
         userEmail: this.email,
         message: this.messages,
       };
-      if (this.email == "" && this.messages == "") {
-        this.err = true;
-        event.preventDefault();
+      if (this.email == "" || this.messages == "") {
+        this.errors = true;
       } else {
         this.$store.dispatch({
           type: "handlePostDataRequest",
@@ -54,6 +56,10 @@ form {
   border: 1px solid #ccc;
   border-radius: 12px;
   padding: 1rem;
+  .errors {
+    color: red;
+    font-weight: 600;
+  }
   .form-control {
     margin: 0.5rem 0;
     label {

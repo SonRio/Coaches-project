@@ -1,15 +1,18 @@
 <template>
-
   <teleport to="body">
+    <transition name="popup">
     <item-pop :titlePopup="loading" v-if="$store.state.loading">
       <item-lazy-load></item-lazy-load>
     </item-pop>
+    </transition>>
     <transition name="popup">
       <item-pop :titlePopup="check" v-if="$store.state.checkLogin == false">
         <p>{{ getTextErr }}</p>
       </item-pop>
     </transition>
-    <item-modal v-if="$store.state.loading"></item-modal>
+    <item-modal
+      v-if="$store.state.checkLogin == false || $store.state.loading == true"
+    ></item-modal>
   </teleport>
 
   <form>
@@ -25,7 +28,7 @@
       Please enter a valid email and password (must be at least 6 characters long).
     </p>
     <item-button @click="handleSubmit()"> {{ textBtn }} </item-button>
-    <item-link @click="handleChangeAction()" class="flat" :linkTo="linkToReg">
+    <item-link @click.prevent="handleChangeAction()" class="flat" :linkTo="linkToReg">
       {{ textLink }} instead
     </item-link>
   </form>
@@ -65,7 +68,7 @@ export default {
       }
     },
     handleSubmit() {
-      if (this.email == "" && this.password == "" || this.password.length < 6) {
+      if ((this.email == "" && this.password == "") || this.password.length < 6) {
         this.errors = true;
         event.preventDefault();
       } else {
@@ -83,8 +86,9 @@ export default {
             url:
               "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCe3EbXvHvc8FM4F00XoX8Fm_hOQDDctic",
             data: dataPost,
+            route: this.$route,
+            router: this.$router,
           });
-          this.textBtn = "Login";
         } else {
           // LOGIN
           console.log("LOGIN");
@@ -117,16 +121,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.popup-leave-to {
+.popup-leave-to,
+.popup-enter-from {
   opacity: 0;
-  transform: scale(0.5);
+  transform: scale(0.7);
 }
-.popup-leave-from {
+.popup-leave-from ,
+.popup-enter-to {
   opacity: 1;
   transform: scale(1);
 }
-.popup-leave-active {
-  transition: 0.5s;
+.popup-leave-active,
+.popup-enter-active {
+  transition: all 0.7s;
 }
 
 form {

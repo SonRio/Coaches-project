@@ -37,17 +37,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.popup-enter-from {
-  opacity: 0;
-  transform: scale(0.5);
-}
-.popup-enter-to {
-  opacity: 1;
-  transform: scale(1);
-}
-.popup-enter-active {
-  transition: 0.5s;
-}
+
+
 
 dialog {
   position: fixed;
@@ -62,7 +53,6 @@ dialog {
   margin: 0;
   overflow: hidden;
   background-color: #fff;
-  height: 225px;
   header {
     background-color: #3a0061;
     color: #fff;

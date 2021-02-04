@@ -16,6 +16,13 @@
 import ItemCard from "../components/common/ItemCard.vue";
 export default {
   components: { ItemCard },
+    beforeRouteLeave() {
+    console.log("GOODBYE");
+  },
+  beforeRouteEnter(to, from) {
+    console.log("FROM", from.path);
+    console.log("TO", to.path);
+  },
 };
 </script>
 

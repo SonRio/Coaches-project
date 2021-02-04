@@ -62,7 +62,14 @@ export default {
     getDataDetail(){
       return this.$store.state.dataDetail;
     }
-  }
+  },
+   beforeRouteLeave() {
+    console.log("GOODBYE");
+  },
+  beforeRouteEnter(to, from) {
+    console.log("FROM", from.path);
+    console.log("TO", to.path);
+  },
 };
 </script>
 

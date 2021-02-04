@@ -14,6 +14,13 @@ import ItemCard from "../components/common/ItemCard.vue";
 import ListRequest from '../components/Request/ListRequest.vue';
 export default {
   components: { ItemCard, ListRequest },
+    beforeRouteLeave() {
+    console.log("GOODBYE");
+  },
+  beforeRouteEnter(to, from) {
+    console.log("FROM", from.path);
+    console.log("TO", to.path);
+  },
 };
 </script>
 

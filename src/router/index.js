@@ -6,7 +6,10 @@ import Home from '../views/Home.vue'
 
 const routes = [{
     path: '/',
-    component: () => import( /* webpackChunkName: "about" */ '../views/Home.vue')
+    redirect: {
+      path: '/coaches',
+      name: 'Coaches'
+    }
   }, {
     path: '/coaches',
     name: 'Coaches',
@@ -19,6 +22,14 @@ const routes = [{
     //   name: 'Detail',
     //   component: () => import( /* webpackChunkName: "about" */ '../views/Detail.vue'),
     // }]
+  },
+  {
+    path: '/auth',
+    query: {
+      redirect: 'register'
+    },
+    name: 'Auth',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Auth.vue')
   },
   {
     path: '/auth',

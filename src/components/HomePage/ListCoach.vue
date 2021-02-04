@@ -75,13 +75,10 @@ export default {
   },
   mounted() {
     this.$store.dispatch("getDefaultData");
-    if (this.$route.path == "/") {
-      this.$router.push({ path: "/coaches" });
-    }
   },
   methods: {
     handleRefresh() {
-      window.location.reload();
+      this.$store.dispatch("getDefaultData");
     },
   },
   watch: {

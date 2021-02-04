@@ -18,12 +18,15 @@ export default {};
 </script>
 
 <style scoped lang="scss">
+.loading-enter-to,
 .loading-leave-from {
   opacity: 1;
 }
+.loading-enter-from
 .loading-leave-to {
   opacity: 0;
 }
+.loading-enter-active,
 .loading-leave-active {
   transition: 0.5s;
 }
@@ -35,6 +38,7 @@ export default {};
   transform: translate(-50%, 30%);
   left: 50%;
   top: -30%;
+  height: 80px;
 }
 .lds-roller div {
   animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;

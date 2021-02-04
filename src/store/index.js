@@ -9,7 +9,7 @@ export default createStore({
     areas: [],
     coaches: [],
     temp: [],
-    dataDetail : [],
+    dataDetail: [],
     tokenId: JSON.parse(localStorage.getItem('checkLogin')),
     linkTo: '/coaches',
     status: '',
@@ -29,7 +29,8 @@ export default createStore({
           path: '/auth',
           query: {
             redirect: 'register'
-          }
+          },
+          name: 'Auth'
         }
       }
       return state.linkTo;
@@ -63,7 +64,9 @@ export default createStore({
   },
   actions: {
     // GET DATA COACHES DEFAUT FROM API
-    getDefaultData({commit}) {
+    getDefaultData({
+      commit
+    }) {
       commit('SET_LOADING', true);
       axios
         .get("https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches.json")
@@ -73,7 +76,9 @@ export default createStore({
           commit('SET_LOADING', false);
         }).catch(err => console.log(err));
     },
-    getDataDetail({commit},payLoad) {
+    getDataDetail({
+      commit
+    }, payLoad) {
       axios
         .get(payLoad.url)
         .then((res) => {
@@ -104,7 +109,9 @@ export default createStore({
       store.state.coaches = temp;
     },
     // HANDLE REGISTER COACH
-    handlePostDataCoach({commit}, payLoad) {
+    handlePostDataCoach({
+      commit
+    }, payLoad) {
       axios.put(payLoad.url, payLoad.data).then((res) => {
         console.log('POST CORRECTED');
         commit('SET_RESULT_POST', res.data);
@@ -114,7 +121,7 @@ export default createStore({
       })
     },
     // HANDLE POST REQUEST FROM USER
-    handlePostDataRequest( store, payLoad) {
+    handlePostDataRequest(store, payLoad) {
       axios.post(payLoad.url, payLoad.data).then((res) => {
         console.log('POST REQUESTS CORRECTED');
         console.log(res);
@@ -124,11 +131,27 @@ export default createStore({
       })
     },
     // HANDLE SIGN FOR USER
-    handleSignUp({commit}, payLoad) {
+    handleSignUp({
+      commit
+    }, payLoad) {
       commit('SET_LOADING', true);
+      setTimeout(() => {
+        commit('SET_LOADING', false);
+      }, 500)
       axios.post(payLoad.url, payLoad.data).then(res => {
         console.log('SignUp CORRECTED');
         commit('SET_LOADING', false);
+        commit('SET_TOKEN_ID', res.data);
+        localStorage.setItem("checkLogin", JSON.stringify(res.data));
+        if (payLoad.route.query.redirect) {
+          payLoad.router.push({
+            path: "/register"
+          });
+        } else {
+          payLoad.router.push({
+            path: "/coaches"
+          });
+        }
         localStorage.setItem("userId", JSON.stringify(res.data));
       }).catch(err => {
         console.log(err);
@@ -136,8 +159,13 @@ export default createStore({
       })
     },
     // HANDLE LOGIN FOR MEM
-    handleLogin({commit}, payLoad) {
+    handleLogin({
+      commit
+    }, payLoad) {
       commit('SET_LOADING', true);
+      setTimeout(() => {
+        commit('SET_LOADING', false);
+      }, 500)
       axios.post(payLoad.url, payLoad.data).then(res => {
         console.log("LOGIN CORRECTED");
         let checkLogin = {

@@ -2,7 +2,7 @@
   <header>
     <nav class="nav">
       <h1>
-        <a href="/coaches" class="header__logo"> Find a Coach </a>
+        <router-link to="/" class="header__logo"> Find a Coach </router-link>
       </h1>
       <ul>
         <li>
