@@ -48,29 +48,29 @@ export default {
   components: { ItemCard },
   data() {
     return {
-      list: ["frontend","backend","career"],
+      list: ["frontend", "backend", "career"],
     };
   },
   methods: {
     handlegetDatafilter() {
       return this.$store.dispatch({
-        type : 'getDatafilter',
-        listFilter : this.list
-      })
+        type: "getDatafilter",
+        listFilter: this.list,
+      });
     },
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .filter-option {
   margin-right: 1rem;
-}
-label {
-  vertical-align: middle;
-  margin-left: 0.25rem;
-}
-input {
-  vertical-align: middle;
+  label {
+    vertical-align: middle;
+    margin-left: 0.25rem;
+  }
+  input {
+    vertical-align: middle;
+  }
 }
 </style>

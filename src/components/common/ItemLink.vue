@@ -10,7 +10,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped laang="scss">
 a {
   text-decoration: none;
   padding: 0.75rem 1.5rem;

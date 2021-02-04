@@ -27,14 +27,18 @@
         v-model="description.value"
         id="description"
         rows="5"
-         @keyup="handleCheckErrItem('description', description)"
+        @keyup="handleCheckErrItem('description', description)"
       ></textarea>
       <p v-if="description.err">{{ lastname.err }}</p>
     </div>
     <div class="form-control" :class="hRate.err == '' ? '' : 'error'">
       <label for="hRate">Hourly Rate</label>
-      <input type="number" v-model="hRate.value" id="hRate" 
-      @keyup="handleCheckErrItem('hRate', hRate)" />
+      <input
+        type="number"
+        v-model="hRate.value"
+        id="hRate"
+        @keyup="handleCheckErrItem('hRate', hRate)"
+      />
       <p v-if="hRate.err">{{ hRate.err }}</p>
     </div>
     <div class="form-control">
@@ -110,7 +114,7 @@ export default {
       this.handleCheckAll();
       if (this.check) {
         console.log("post dc nha");
-        let user = JSON.parse( localStorage.getItem("checkLogin"));
+        let user = JSON.parse(localStorage.getItem("checkLogin"));
         let dataCoach = {
           areas: this.areas.value,
           description: this.description.value,
@@ -205,39 +209,42 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .form-control {
   margin: 0.5rem 0;
+  label {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  input,
+  textarea {
+    display: block;
+    width: 100%;
+    font: inherit;
+    border: 1px solid #ccc;
+    padding: 0.15rem;
+  }
+  input[type="checkbox"] {
+    display: inline;
+    width: auto;
+    border: none;
+  }
+  input[type="checkbox"] + label {
+    font-weight: 400;
+    display: inline;
+    margin: 0 0 0 0.5rem;
+  }
 }
-.form-control label {
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  display: block;
-}
-.form-control input,
-.form-control textarea {
-  display: block;
-  width: 100%;
-  font: inherit;
-  border: 1px solid #ccc;
-  padding: 0.15rem;
-}
-.form-control input[type="checkbox"] {
-  display: inline;
-  width: auto;
-  border: none;
-}
-.form-control input[type="checkbox"] + label {
-  font-weight: 400;
-  display: inline;
-  margin: 0 0 0 0.5rem;
-}
-.error input,
-.error textarea {
-  border: 1px solid red;
-}
-.error label {
+
+.error {
+  input,
+  textarea {
+    border: 1px solid red;
+  }
+  label {
   color: red;
   font-weight: 600;
+}
 }
 </style>

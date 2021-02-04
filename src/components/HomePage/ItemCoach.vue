@@ -46,24 +46,21 @@ export default {
       linkToDetail: "",
     };
   },
-  mounted() {},
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 li {
   margin: 1rem 0;
   border: 1px solid #424242;
   border-radius: 12px;
   padding: 1rem;
-}
-
-div {
-  margin: 0.5rem 0;
-}
-
-.action {
-  display: flex;
-  justify-content: flex-end;
+  div {
+    margin: 0.5rem 0;
+  }
+  .action {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 </style>

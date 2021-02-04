@@ -1,6 +1,6 @@
 <template>
   <transition name="popup" appear>
-    <dialog v-if="checkLogin == false" open>
+    <dialog open>
       <header>
         <h2>{{ titlePopup }}</h2>
       </header>
@@ -24,8 +24,8 @@ export default {
   },
   methods: {
     togglePopup() {
-      console.log(this);
-      this.$store.commit("setCheckLogin", true);
+      this.$store.commit("SET_LOADING", false);
+      this.$store.commit("SET_CHECK_LOGIN", true);
     },
   },
   computed: {
@@ -65,6 +65,7 @@ dialog {
   margin: 0;
   overflow: hidden;
   background-color: #fff;
+  height: 225px;
   header {
     background-color: #3a0061;
     color: #fff;
@@ -83,6 +84,12 @@ dialog {
     display: flex;
     justify-content: flex-end;
     margin: 0;
+  }
+}
+@media (min-width: 768px) {
+  dialog {
+    left: calc(50% - 20rem);
+    width: 40rem;
   }
 }
 </style>

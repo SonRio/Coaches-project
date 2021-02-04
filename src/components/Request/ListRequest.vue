@@ -29,27 +29,27 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 ul {
   list-style: none;
   margin: 2rem auto;
   padding: 0;
   max-width: 30rem;
-}
-li {
-  margin: 1rem 0;
-  border: 1px solid #ccc;
-  padding: 1rem;
-}
-p {
-  margin: 0.5rem 0 0 0;
-}
-a {
-  color: #3d008d;
-  text-decoration: none;
-  font-weight: 700;
+  li {
+    margin: 1rem 0;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    p {
+      margin: 0.5rem 0 0 0;
+    }
+    a {
+      color: #3d008d;
+      text-decoration: none;
+      font-weight: 700;
+    }
+  }
 }
 h4 {
-    text-align: center;
+  text-align: center;
 }
 </style>

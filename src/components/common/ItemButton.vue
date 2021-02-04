@@ -8,7 +8,7 @@
 export default {};
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 button {
   text-decoration: none;
   padding: 0.75rem 1.5rem;

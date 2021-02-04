@@ -14,7 +14,7 @@ export default createStore({
     status: '',
     request: [],
     checkLogin: true,
-    loading : true
+    loading: false
   },
   getters: {
     getTokenId: (state) => {
@@ -35,45 +35,48 @@ export default createStore({
     },
   },
   mutations: {
-    setDefaultData(state, coaches) {
+    SET_DEFAULT_DATA(state, coaches) {
       state.coaches = coaches;
     },
-    setTempData(state, temp) {
+    SET_TEMP_DATA(state, temp) {
       state.temp = temp;
     },
-    setDataRequest(state, request) {
+    SET_DATA_REQUEST(state, request) {
       state.request = request;
     },
-    setResultPost(state, status) {
+    SET_RESULT_POST(state, status) {
       state.status = status;
     },
-    setCheckLogin(state, checkLogin) {
+    SET_CHECK_LOGIN(state, checkLogin) {
       state.checkLogin = checkLogin;
     },
-    setTokenId(state, tokenId) {
+    SET_TOKEN_ID(state, tokenId) {
       state.tokenId = tokenId;
     },
-    setLoading(state,loading) {
+    SET_LOADING(state, loading) {
       return state.loading = loading;
     }
   },
   actions: {
     // GET DATA COACHES DEFAUT FROM API
-    getDefaultData(state) {
+    getDefaultData(store) {
+      store.commit('SET_LOADING', true);
       axios
         .get("https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches.json")
         .then((res) => {
-          state.commit('setDefaultData', res.data);
-          state.commit('setTempData', res.data)
+          store.commit('SET_DEFAULT_DATA', res.data);
+          store.commit('SET_TEMP_DATA', res.data)
+          store.commit('SET_LOADING', false);
         }).catch(err => console.log(err));
     },
     // GET DATA REQUEST FOR MEM FROM API
-    getDataRequest(state) {
-      let userId = state.state.tokenId.localId
+    getDataRequest(store) {
+      let userId = store.state.tokenId.localId;
       axios
         .get(`https://coaches-project-8d77f-default-rtdb.firebaseio.com/request/${userId}.json`)
         .then((res) => {
-          state.commit('setDataRequest', res.data)
+          store.commit('SET_DATA_REQUEST', res.data);
+          console.log(res.data);
         }).catch(err => console.log(err));
     },
     // GET DATA TEMP TO SS WITH FILTER
@@ -90,17 +93,17 @@ export default createStore({
       store.state.coaches = temp;
     },
     // HANDLE REGISTER COACH
-    handlePostDataCoach(state, payLoad) {
+    handlePostDataCoach({commit}, payLoad) {
       axios.put(payLoad.url, payLoad.data).then((res) => {
         console.log('POST CORRECTED');
-        state.commit('setResultPost', res.data);
+        commit('SET_RESULT_POST', res.data);
       }).catch(err => {
         console.log('POST FAILSE');
-        state.commit('setResultPost', err.message)
+        commit('SET_RESULT_POST', err.message)
       })
     },
     // HANDLE POST REQUEST FROM USER
-    handlePostDataRequest(state, payLoad) {
+    handlePostDataRequest( store, payLoad) {
       axios.post(payLoad.url, payLoad.data).then((res) => {
         console.log('POST REQUESTS CORRECTED');
         console.log(res);
@@ -110,14 +113,20 @@ export default createStore({
       })
     },
     // HANDLE SIGN FOR USER
-    handleSignUp(state, payLoad) {
+    handleSignUp({commit}, payLoad) {
+      commit('SET_LOADING', true);
       axios.post(payLoad.url, payLoad.data).then(res => {
         console.log('SignUp CORRECTED');
+        commit('SET_LOADING', false);
         localStorage.setItem("userId", JSON.stringify(res.data));
-      }).catch(err => console.log(err))
+      }).catch(err => {
+        console.log(err);
+        commit('SET_CHECK_LOGIN', false);
+      })
     },
     // HANDLE LOGIN FOR MEM
-    handleLogin(state, payLoad) {
+    handleLogin({commit}, payLoad) {
+      commit('SET_LOADING', true);
       axios.post(payLoad.url, payLoad.data).then(res => {
         console.log("LOGIN CORRECTED");
         let checkLogin = {
@@ -126,8 +135,7 @@ export default createStore({
           email: res.data.email,
         };
         localStorage.setItem("checkLogin", JSON.stringify(checkLogin));
-        state.commit('setTokenId', checkLogin);
-        state.commit('setCheckLogin', true);
+        commit('SET_TOKEN_ID', checkLogin);
         if (payLoad.route.query.redirect) {
           payLoad.router.push({
             path: "/register"
@@ -138,10 +146,9 @@ export default createStore({
           });
         }
       }).catch(err => {
-        state.commit('setCheckLogin', false);
+        commit('SET_CHECK_LOGIN', false);
         console.log(err);
       })
     },
   },
-
 })

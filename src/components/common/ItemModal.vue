@@ -1,5 +1,5 @@
 <template>
-  <div @click="togglePopup()" v-if="checkLogin == false" class="modal"></div>
+  <div @click="togglePopup()" class="modal"></div>
 </template>
 
 <script>
@@ -12,12 +12,13 @@ export default {
   },
   methods: {
     togglePopup() {
-      this.$store.commit("setCheckLogin", true);
+      this.$store.commit("SET_LOADING", false);
+      this.$store.commit("SET_CHECK_LOGIN", true);
     },
   },
   computed: {
-    checkLogin() {
-      return this.$store.state.checkLogin;
+    checkLoading() {
+      return this.$store.state.loading;
     },
   },
 };

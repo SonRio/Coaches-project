@@ -25,7 +25,7 @@
           >
             {{ itemArea.toUpperCase() }}
           </item-badge>
-          <p>123</p>
+          <p>{{ detailCoach.description }}</p>
         </item-card>
       </section>
     </div>

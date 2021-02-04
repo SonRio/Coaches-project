@@ -8,7 +8,7 @@
           Register as Coach
         </item-link>
       </div>
-      <item-lazy-load v-if="getData == ''"></item-lazy-load>
+      <item-lazy-load v-if="$store.state.loading"></item-lazy-load>
       <ul v-else>
         <item-coach
           v-for="item in Object.entries(getData)"
@@ -75,6 +75,9 @@ export default {
   },
   mounted() {
     this.$store.dispatch("getDefaultData");
+    if (this.$route.path == "/") {
+      this.$router.push({ path: "/coaches" });
+    }
   },
   methods: {
     handleRefresh() {
@@ -89,7 +92,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .controls {
   display: flex;
   justify-content: space-between;

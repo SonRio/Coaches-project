@@ -3,11 +3,10 @@
     <item-pop :titlePopup="loading" v-if="$store.state.loading">
       <item-lazy-load></item-lazy-load>
     </item-pop>
-    <item-pop :titlePopup="check">
+    <item-pop :titlePopup="check" v-if="$store.state.checkLogin == false">
       <p>{{ getTextErr }}</p>
     </item-pop>
-
-    <item-modal></item-modal>
+    <item-modal v-if="$store.state.loading"></item-modal>
   </teleport>
 
   <form>
@@ -82,6 +81,7 @@ export default {
               "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCe3EbXvHvc8FM4F00XoX8Fm_hOQDDctic",
             data: dataPost,
           });
+          this.textBtn = "Login";
         } else {
           // LOGIN
           console.log("LOGIN");
@@ -113,33 +113,48 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.popup-enter-from,
+.popup-leave-to {
+  opacity: 0;
+  transform: scale(0.5);
+}
+.popup-enter-to,
+.popup-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+.popup-enter-active,
+.popup-leave-active {
+  transition: 0.5s;
+}
 form {
   margin: 1rem;
   padding: 1rem;
-}
-.form-control {
-  margin: 0.5rem 0;
-}
-.form-control label {
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  display: block;
-}
-.form-control input,
-.form-control textarea {
-  display: block;
-  width: 100%;
-  font: inherit;
-  border: 1px solid #ccc;
-  padding: 0.15rem;
-}
-.flat {
-  background-color: transparent;
-  color: #3a0061;
-  border: none;
-}
-.flat:hover {
-  background-color: #edd2ff;
+  .form-control {
+    margin: 0.5rem 0;
+    label {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    input,
+    textarea {
+      display: block;
+      width: 100%;
+      font: inherit;
+      border: 1px solid #ccc;
+      padding: 0.15rem;
+    }
+  }
+
+  .flat {
+    background-color: transparent;
+    color: #3a0061;
+    border: none;
+  }
+  .flat:hover {
+    background-color: #edd2ff;
+  }
 }
 </style>

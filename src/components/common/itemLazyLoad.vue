@@ -17,7 +17,7 @@
 export default {};
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .loading-leave-from {
   opacity: 1;
 }
