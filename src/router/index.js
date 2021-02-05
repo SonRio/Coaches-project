@@ -62,14 +62,6 @@ const routes = [{
   {
     path: '/detail/:id',
     name: 'Detail',
-    beforeEnter: (to, from, next) => {
-      console.log(store.state.dataDetail.length);
-      if (store.state.dataDetail.length != 0) {
-        next()
-      } else {
-        next('/NotFound')
-      }
-    },
     component: () => import( /* webpackChunkName: "about" */ '../views/Detail.vue')
   },
   {

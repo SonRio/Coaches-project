@@ -1,6 +1,6 @@
 <template>
   <transition appear name="open" id="detail">
-    <div>
+    <div v-if="getDataDetail">
       <section>
         <item-card>
           <h2>{{ getDataDetail.firstName }}</h2>
