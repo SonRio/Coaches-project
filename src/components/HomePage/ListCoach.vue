@@ -54,6 +54,7 @@ export default {
       }
     },
     setLinkTo() {
+      console.log(this.getLinkTo);
       if (this.getLinkTo != null) {
         return this.getLinkTo;
       } else {
@@ -73,6 +74,7 @@ export default {
       let index = -1;
       if (userId != null && arr != null) {
         index = Object.keys(arr).findIndex((item) => item == userId.localId);
+        localStorage.setItem('checkCoach',index);
       }
       return index;
     },

@@ -186,7 +186,6 @@ export default createStore({
         let index = -1;
         if (userId != null && arr != null) {
           index = Object.keys(arr).findIndex((item) => item == userId.localId);
-          localStorage.setItem('checkCoach',index);
         }
         // DON'T TO REGISTER PAGE IF HAVE ACCOUNT
         if (payLoad.route.query.redirect && index == -1) {

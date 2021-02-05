@@ -48,7 +48,7 @@ const routes = [{
     beforeEnter: (to, from, next) => {
       let checkCoach = localStorage.getItem('checkCoach');
       if (store.state.tokenId != null) {
-        if (checkCoach != -1) {
+        if (checkCoach > 0 ) {
           next('/coaches');
         } else {
           next()
@@ -62,11 +62,11 @@ const routes = [{
   {
     path: '/detail/:id',
     name: 'Detail',
-    beforeEnter: (to,from,next) => {
+    beforeEnter: (to, from, next) => {
       console.log(store.state.dataDetail.length);
-      if(store.state.dataDetail.length != 0){
+      if (store.state.dataDetail.length != 0) {
         next()
-      }else{
+      } else {
         next('/NotFound')
       }
     },
