@@ -1,4 +1,5 @@
 <template>
+  <item-lazy-load v-if="$store.state.loading"></item-lazy-load>
   <div>
     <ul v-if="getDataRequest != ''">
       <li v-for="(item, index) in getDataRequest" :key="index">
@@ -8,12 +9,14 @@
         <p>{{ item.message }}</p>
       </li>
     </ul>
-    <h4 v-else>No request for you</h4>
+    <h4 v-else>You haven't received any requests yet!</h4>
   </div>
 </template>
 
 <script>
+import itemLazyLoad from "../common/itemLazyLoad.vue";
 export default {
+  components: { itemLazyLoad },
   computed: {
     getDataRequest() {
       if (this.$store.state.request) {
@@ -23,7 +26,8 @@ export default {
       }
     },
   },
-  mounted() {
+  created() {
+    this.$store.commit("SET_LOADING", true);
     this.$store.dispatch("getDataRequest");
   },
 };

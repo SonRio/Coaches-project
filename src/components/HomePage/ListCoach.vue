@@ -3,8 +3,8 @@
     <item-card>
       <div class="controls">
         <item-button @click="handleRefresh()" class="outline"> Refresh </item-button>
-        <item-link v-if="getCheckCoach == -1" :linkTo="getLinkTo">
-          {{ (textLink = getTokenId ? "" : "Login to" || "") }}
+        <item-link v-if="getCheckCoach == -1" :linkTo="setLinkTo">
+          {{ (textLink = setTokenId ? "" : "Login to" || "") }}
           Register as Coach
         </item-link>
       </div>
@@ -27,6 +27,8 @@ import ItemCard from "../common/ItemCard.vue";
 import ItemLazyLoad from "../common/itemLazyLoad.vue";
 import ItemLink from "../common/ItemLink.vue";
 import ItemCoach from "./ItemCoach.vue";
+import { mapState, mapGetters } from "vuex";
+
 export default {
   components: { ItemCoach, ItemButton, ItemLink, ItemCard, ItemLazyLoad },
   data() {
@@ -35,36 +37,38 @@ export default {
     };
   },
   computed: {
+    ...mapState(["coaches", "status", "temp", "areas"]),
+    ...mapGetters(["getTokenId", "getLinkTo"]),
     getData() {
-      if (this.$store.state.coaches != null) {
-        return this.$store.state.coaches;
+      if (this.coaches != null) {
+        return this.coaches;
       } else {
         return "";
       }
     },
-    getTokenId() {
-      if (this.$store.getters.getTokenId != null) {
-        return this.$store.getters.getTokenId;
+    setTokenId() {
+      if (this.getTokenId != null) {
+        return this.getTokenId;
       } else {
         return "";
       }
     },
-    getLinkTo() {
-      if (this.$store.getters.getLinkTo != null) {
-        return this.$store.getters.getLinkTo;
+    setLinkTo() {
+      if (this.getLinkTo != null) {
+        return this.getLinkTo;
       } else {
         return "/coaches";
       }
     },
     getResultPost() {
-      if (this.$store.state.status) {
-        return this.$store.state.status;
+      if (this.status) {
+        return this.status;
       } else {
         return "";
       }
     },
     getCheckCoach() {
-      let arr = this.$store.state.temp;
+      let arr = this.temp;
       let userId = this.getTokenId;
       let index = -1;
       if (userId != null && arr != null) {
@@ -85,7 +89,7 @@ export default {
       }, 300);
       this.$store.dispatch({
         type: "getDatafilter",
-        listFilter: this.$store.state.areas,
+        listFilter: this.areas,
       });
     },
   },

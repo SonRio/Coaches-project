@@ -15,7 +15,7 @@ export default createStore({
     status: '',
     request: [],
     checkLogin: true,
-    loading: false
+    loading: false,
   },
   getters: {
     getTokenId: (state) => {
@@ -38,32 +38,32 @@ export default createStore({
   },
   mutations: {
     SET_DEFAULT_DATA(state, coaches) {
-      state.coaches = coaches;
+      return state.coaches = coaches;
     },
     SET_TEMP_DATA(state, temp) {
-      state.temp = temp;
+      return state.temp = temp;
     },
     SET_DATA_FILTER(state, areas) {
-      state.areas = areas;
+      return state.areas = areas;
     },
     SET_DATA_REQUEST(state, request) {
-      state.request = request;
+      return state.request = request;
     },
     SET_DATA_DETAIL(state, dataDetail) {
-      state.dataDetail = dataDetail;
+      return state.dataDetail = dataDetail;
     },
     SET_RESULT_POST(state, status) {
-      state.status = status;
+      return state.status = status;
     },
     SET_CHECK_LOGIN(state, checkLogin) {
-      state.checkLogin = checkLogin;
+      return state.checkLogin = checkLogin;
     },
     SET_TOKEN_ID(state, tokenId) {
-      state.tokenId = tokenId;
+      return state.tokenId = tokenId;
     },
     SET_LOADING(state, loading) {
       return state.loading = loading;
-    }
+    },
   },
   actions: {
     // GET DATA COACHES DEFAUT FROM API
@@ -94,12 +94,13 @@ export default createStore({
         .get(`https://coaches-project-8d77f-default-rtdb.firebaseio.com/request/${userId}.json`)
         .then((res) => {
           store.commit('SET_DATA_REQUEST', res.data);
+          store.commit('SET_LOADING', false);
           console.log(res.data);
         }).catch(err => console.log(err));
     },
     // GET DATA TEMP TO SS WITH FILTER
     getDatafilter(store, payLoad) {
-      store.commit('SET_DATA_FILTER',payLoad.listFilter)
+      store.commit('SET_DATA_FILTER', payLoad.listFilter)
       let temp = Object.values(store.state.temp).filter((item) => {
         let check;
         payLoad.listFilter.forEach(elm => {
@@ -163,7 +164,8 @@ export default createStore({
     },
     // HANDLE LOGIN FOR MEM
     handleLogin({
-      commit
+      commit,
+      state
     }, payLoad) {
       commit('SET_LOADING', true);
       setTimeout(() => {
@@ -178,7 +180,16 @@ export default createStore({
         };
         localStorage.setItem("checkLogin", JSON.stringify(checkLogin));
         commit('SET_TOKEN_ID', checkLogin);
-        if (payLoad.route.query.redirect) {
+        // CHECK LINK TO LOGIN OR REGISTER
+        let arr = state.temp;
+        let userId = state.tokenId;
+        let index = -1;
+        if (userId != null && arr != null) {
+          index = Object.keys(arr).findIndex((item) => item == userId.localId);
+          localStorage.setItem('checkCoach',index);
+        }
+        // DON'T TO REGISTER PAGE IF HAVE ACCOUNT
+        if (payLoad.route.query.redirect && index == -1) {
           payLoad.router.push({
             path: "/register"
           });

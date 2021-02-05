@@ -1,5 +1,5 @@
 <template>
-  <transition appear name="loading">
+  <div class="center">
     <div class="lds-roller">
       <div></div>
       <div></div>
@@ -10,7 +10,7 @@
       <div></div>
       <div></div>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script>
@@ -18,31 +18,19 @@ export default {};
 </script>
 
 <style scoped lang="scss">
-.loading-enter-to,
-.loading-leave-from {
-  opacity: 1;
+.center {
+  text-align: center;
 }
-.loading-enter-from
-.loading-leave-to {
-  opacity: 0;
-}
-.loading-enter-active,
-.loading-leave-active {
-  transition: 0.5s;
-}
-
 .lds-roller {
   display: inline-block;
   position: relative;
   width: 80px;
-  transform: translate(-50%, 30%);
-  left: 50%;
-  top: -30%;
   height: 80px;
 }
 .lds-roller div {
   animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   transform-origin: 40px 40px;
+  background: #71008d;
 }
 .lds-roller div:after {
   content: " ";
@@ -51,7 +39,7 @@ export default {};
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #3d008d;
+  background: #71008d;
   margin: -4px 0 0 -4px;
 }
 .lds-roller div:nth-child(1) {

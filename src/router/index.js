@@ -3,6 +3,7 @@ import {
   createWebHistory
 } from 'vue-router'
 import Home from '../views/Home.vue'
+import store from '../store/index'
 
 const routes = [{
     path: '/',
@@ -44,11 +45,31 @@ const routes = [{
   {
     path: '/register',
     name: 'RegisterCoach',
+    beforeEnter: (to, from, next) => {
+      let checkCoach = localStorage.getItem('checkCoach');
+      if (store.state.tokenId != null) {
+        if (checkCoach != -1) {
+          next('/coaches');
+        } else {
+          next()
+        }
+      } else {
+        next('/auth');
+      }
+    },
     component: () => import( /* webpackChunkName: "about" */ '../views/RegisterCoach.vue'),
   },
   {
     path: '/detail/:id',
     name: 'Detail',
+    beforeEnter: (to,from,next) => {
+      console.log(store.state.dataDetail.length);
+      if(store.state.dataDetail.length != 0){
+        next()
+      }else{
+        next('/NotFound')
+      }
+    },
     component: () => import( /* webpackChunkName: "about" */ '../views/Detail.vue')
   },
   {

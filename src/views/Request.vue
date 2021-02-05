@@ -1,20 +1,22 @@
 <template>
-  <section>
-    <item-card>
-      <header>
-        <h2>Requests Received</h2>
-      </header>
-      <list-request></list-request>
-    </item-card>
-  </section>
+  <transition name="open" appear>
+    <section>
+      <item-card>
+        <header>
+          <h2>Requests Received</h2>
+        </header>
+        <list-request></list-request>
+      </item-card>
+    </section>
+  </transition>
 </template>
 
 <script>
 import ItemCard from "../components/common/ItemCard.vue";
-import ListRequest from '../components/Request/ListRequest.vue';
+import ListRequest from "../components/Request/ListRequest.vue";
 export default {
   components: { ItemCard, ListRequest },
-    beforeRouteLeave() {
+  beforeRouteLeave() {
     console.log("GOODBYE");
   },
   beforeRouteEnter(to, from) {
@@ -28,5 +30,4 @@ export default {
 header {
   text-align: center;
 }
-
 </style>

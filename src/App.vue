@@ -37,7 +37,7 @@ h4 {
 .open-enter-from,
 .open-leave-to {
   opacity: 0;
-  transform: translateY(-20px);
+  transform: translateY(-50px);
 }
 .open-enter-to,
 .open-leave-from {

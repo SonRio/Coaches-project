@@ -1,5 +1,4 @@
 <template>
-
   <transition appear name="open" id="detail">
     <div>
       <section>
@@ -58,12 +57,12 @@ export default {
       url: `https://coaches-project-8d77f-default-rtdb.firebaseio.com/coaches/${this.id}.json/`,
     });
   },
-  computed : {
-    getDataDetail(){
+  computed: {
+    getDataDetail() {
       return this.$store.state.dataDetail;
-    }
+    },
   },
-   beforeRouteLeave() {
+  beforeRouteLeave() {
     console.log("GOODBYE");
   },
   beforeRouteEnter(to, from) {
